@@ -10,7 +10,7 @@ const {
 const { execSync } = require("child_process");
 const { cwd, argv, chdir } = require("process");
 
-const template = join(__dirname, "./create-new-plugin-files");
+const template = join(__dirname, "./files_create-new-plugin");
 
 const isDir = (path) => {
   try {
@@ -62,10 +62,11 @@ async function main() {
       execSync(`${pkg} init`, { stdio: [1, 1, 1] });
     } catch (_) {}
   }
-  execSync("pnpm install", { stdio: [1, 1, 1] });
+  execSync("pnpm install --prefer-offline", { stdio: [1, 1, 1] });
 
   chdir(cwd_);
   console.log(`\n$ cd ${relative(cwd(), dest)}`);
+  console.log(`\n$ pnpm add @ui5/shared-lib`);
 }
 
 main();

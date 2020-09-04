@@ -20,8 +20,13 @@
 
 import * as React from "react";
 import { EditorPlugin } from "@ui5/shared-lib/lib/editor/EditorPlugin";
+import {
+  VerticalTab,
+  VerticalTabItem,
+} from "@ui5/react-user-interface/lib/VerticalTabs";
 
 export default class EditorLeft extends EditorPlugin {
+  tabs: VerticalTabItem[] = [];
   onRegisterPlugin() {
     return {
       info: {
@@ -29,6 +34,21 @@ export default class EditorLeft extends EditorPlugin {
       },
     };
   }
-  onSetup() {}
-  onMount() {}
+  onSetup() {
+    this.editor?.events.on("SetEditorLeftTab", (tab: VerticalTabItem) => {
+      this.tabs.push(tab);
+    });
+  }
+  onMount() {
+    this.editor?.events.emit("SetEditorComponent", [
+      "left",
+      () => {
+        return (
+          <div>
+            <VerticalTab tabs={this.tabs} />
+          </div>
+        );
+      },
+    ]);
+  }
 }

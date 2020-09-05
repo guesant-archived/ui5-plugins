@@ -19,8 +19,16 @@
 //endregion
 
 import * as React from "react";
+import { EditorPlugin } from "@ui5/shared-lib/lib/editor/EditorPlugin";
+import { TemplateObject } from "@fantastic-images/types";
+
+export interface Inspector {
+  verifyCompatibility: ({ object }: { object: TemplateObject }) => boolean;
+  component: React.ElementType;
+}
 
 export default class InpectObject extends EditorPlugin {
+  inspectors: Inspector[] = [];
   onRegisterPlugin() {
     return {
       info: {
@@ -28,6 +36,10 @@ export default class InpectObject extends EditorPlugin {
       },
     };
   }
-  onSetup() {}
+  onSetup() {
+    this.editor?.events.on("SetInspector", (inspector: Inspector) => {
+      this.inspectors.push(inspector);
+    });
+  }
   onMount() {}
 }

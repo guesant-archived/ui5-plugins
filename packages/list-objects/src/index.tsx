@@ -36,9 +36,9 @@ export default class ListObjects extends EditorPlugin {
   onSetup() {}
   onMount() {
     if (this.editor) {
-      this.editor.events.emit("SetEditorLeftTab", {
-        ui: { displayText: "Camadas" },
-        component: () => {
+      this.editor.events.emit("SetEditorLeftTab", () => [
+        { ui: { displayText: "Camadas" } },
+        () => {
           if (!this.editor) return <React.Fragment />;
           const { editor, template } = this.editor.state;
 
@@ -82,7 +82,7 @@ export default class ListObjects extends EditorPlugin {
             )
           );
         },
-      });
+      ]);
     }
   }
 }

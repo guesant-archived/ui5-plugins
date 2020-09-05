@@ -78,7 +78,15 @@ export default class InspectObjectPosition extends EditorPlugin {
               padding: "6px",
               gridGap: "4px",
             }}
-          />
+          >
+            {[
+              [["left", "x"], genericInput],
+              [["top", "y"], genericInput],
+              [["width", "w"], genericInput],
+              [["height", "h"], genericInput],
+              [["angle", "a"], genericInput],
+            ].map(([args, handler]: any, idx) => handler(args, idx))}
+          </div>
         );
       },
     });

@@ -1,3 +1,4 @@
+//region Preamble
 /**
  * https://github.com/guesant/ui5-monorepo
  * Copyright (C) 2020 Gabriel Rodrigues
@@ -70,6 +71,32 @@ export default class InspectObjectPosition extends EditorPlugin {
           );
         };
 
+        const sizeInput = ([key, prefix, scale]: string[], idx?: number) => {
+          const currentValue = sharedProperty(
+            (obj) => obj[key] * (obj.type === "image" ? obj[scale] : 1),
+            "",
+          )(selectedObjects);
+          return (
+            <InputText
+              {...(typeof idx === "number" ? { key: idx } : {})}
+              prefix={prefix}
+              defaultValue={currentValue}
+              onBlur={({ target: { value } }) => {
+                value !== currentValue &&
+                  updateAll(({ object }) =>
+                    object.type === "image"
+                      ? {
+                          [scale]: parseFloat(value) / object[key],
+                        }
+                      : {
+                          [key]: value,
+                        },
+                  );
+              }}
+            />
+          );
+        };
+
         return (
           <div
             style={{
@@ -82,8 +109,8 @@ export default class InspectObjectPosition extends EditorPlugin {
             {[
               [["left", "x"], genericInput],
               [["top", "y"], genericInput],
-              [["width", "w"], genericInput],
-              [["height", "h"], genericInput],
+              [["width", "w", "scaleX"], sizeInput],
+              [["height", "h", "scaleY"], sizeInput],
               [["angle", "a"], genericInput],
             ].map(([args, handler]: any, idx) => handler(args, idx))}
           </div>

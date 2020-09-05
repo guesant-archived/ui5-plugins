@@ -1,0 +1,8 @@
+{
+  "name": "preamble",
+  "private": "true",
+  "main": "apply-preamble.js",
+  "dependencies": {
+    "glob": "^7.1.6"
+  }
+}

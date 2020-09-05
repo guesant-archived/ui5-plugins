@@ -22,6 +22,7 @@ import * as React from "react";
 import { LayerList } from "@ui5/react-user-interface/lib/LayerList";
 import { LayerListItem } from "@ui5/react-user-interface/lib/LayerListItem";
 import { EditorPlugin } from "@ui5/shared-lib/lib/editor/EditorPlugin";
+import { isSelected } from "@ui5/shared-lib/lib/editor/selection/is-selected";
 
 export default class ListObjects extends EditorPlugin {
   onRegisterPlugin() {
@@ -38,14 +39,23 @@ export default class ListObjects extends EditorPlugin {
         ui: { displayText: "Camadas" },
         component: () => {
           if (!this.editor) return <React.Fragment />;
-          const { template } = this.editor.state;
+          const { editor, template } = this.editor.state;
+
           return (
             this.editor && (
               <div>
                 <LayerList>
                   {template.model.fabricExported.objects.map((obj, idx) => (
                     <React.Fragment key={idx}>
-                      <LayerListItem>{obj.type}</LayerListItem>
+                      <LayerListItem
+                        className={
+                          isSelected(editor.selectedObjects)(idx)
+                            ? "active"
+                            : ""
+                        }
+                      >
+                        {obj.type}
+                      </LayerListItem>
                     </React.Fragment>
                   ))}
                 </LayerList>

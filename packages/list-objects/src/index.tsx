@@ -22,6 +22,7 @@ import * as React from "react";
 import { LayerList } from "@ui5/react-user-interface/lib/LayerList";
 import { LayerListItem } from "@ui5/react-user-interface/lib/LayerListItem";
 import { EditorPlugin } from "@ui5/shared-lib/lib/editor/EditorPlugin";
+import { smartSelection } from "@ui5/shared-lib/lib/editor/selection/smart-selection";
 import { isSelected } from "@ui5/shared-lib/lib/editor/selection/is-selected";
 
 export default class ListObjects extends EditorPlugin {
@@ -41,10 +42,24 @@ export default class ListObjects extends EditorPlugin {
           if (!this.editor) return <React.Fragment />;
           const { editor, template } = this.editor.state;
 
+          const updateSelection = (selectedObjects: number[]) => {
+            this.editor?.onSetEditor({
+              ...editor,
+              selectedObjects,
+            });
+          };
+
+          const _smartSelection = smartSelection(updateSelection)(
+            editor.selectedObjects,
+          );
+
           return (
             this.editor && (
-              <div>
-                <LayerList>
+              <div style={{ height: "100%" }}>
+                <LayerList
+                  style={{ height: "100%" }}
+                  onClick={() => updateSelection([])}
+                >
                   {template.model.fabricExported.objects.map((obj, idx) => (
                     <React.Fragment key={idx}>
                       <LayerListItem
@@ -53,6 +68,10 @@ export default class ListObjects extends EditorPlugin {
                             ? "active"
                             : ""
                         }
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          _smartSelection(idx)(e);
+                        }}
                       >
                         {obj.type}
                       </LayerListItem>

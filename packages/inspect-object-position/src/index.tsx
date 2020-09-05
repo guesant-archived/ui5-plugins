@@ -23,6 +23,8 @@ import {
   updateSelectedItems,
   fnFunction,
 } from "@ui5/shared-lib/lib/template/update-selected-items";
+import { sharedProperty } from "@ui5/shared-lib/lib/shared-property";
+import { InputText } from "@ui5/react-user-interface/lib/Form/InputText";
 
 export default class InspectObjectPosition extends EditorPlugin {
   onRegisterPlugin() {
@@ -50,6 +52,23 @@ export default class InspectObjectPosition extends EditorPlugin {
               template,
             })(fn),
           );
+
+        const genericInput = ([key, prefix]: string[], idx?: number) => {
+          const currentValue = sharedProperty(
+            (obj) => obj[key],
+            "",
+          )(selectedObjects);
+          return (
+            <InputText
+              {...(typeof idx === "number" ? { key: idx } : {})}
+              prefix={prefix}
+              defaultValue={currentValue}
+              onBlur={({ target: { value } }) => {
+                value !== currentValue && updateAll(() => ({ [key]: value }));
+              }}
+            />
+          );
+        };
 
         return (
           <div

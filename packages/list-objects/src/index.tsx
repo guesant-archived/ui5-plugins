@@ -19,6 +19,8 @@
 //endregion
 
 import * as React from "react";
+import { LayerList } from "@ui5/react-user-interface/lib/LayerList";
+import { LayerListItem } from "@ui5/react-user-interface/lib/LayerListItem";
 import { EditorPlugin } from "@ui5/shared-lib/lib/editor/EditorPlugin";
 
 export default class ListObjects extends EditorPlugin {
@@ -30,5 +32,28 @@ export default class ListObjects extends EditorPlugin {
     };
   }
   onSetup() {}
-  onMount() {}
+  onMount() {
+    if (this.editor) {
+      this.editor.events.emit("SetEditorLeftTab", {
+        ui: { displayText: "Camadas" },
+        component: () => {
+          if (!this.editor) return <React.Fragment />;
+          const { template } = this.editor.state;
+          return (
+            this.editor && (
+              <div>
+                <LayerList>
+                  {template.model.fabricExported.objects.map((obj, idx) => (
+                    <React.Fragment key={idx}>
+                      <LayerListItem>{obj.type}</LayerListItem>
+                    </React.Fragment>
+                  ))}
+                </LayerList>
+              </div>
+            )
+          );
+        },
+      });
+    }
+  }
 }

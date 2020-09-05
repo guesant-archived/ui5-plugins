@@ -1,6 +1,6 @@
 //region Preamble
 /**
- * ui5, the ultimate toolset for image generation
+ * https://github.com/guesant/ui5-monorepo
  * Copyright (C) 2020 Gabriel Rodrigues
  *
  * This program is free software: you can redistribute it and/or modify

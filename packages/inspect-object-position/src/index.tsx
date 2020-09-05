@@ -29,5 +29,22 @@ export default class InspectObjectPosition extends EditorPlugin {
     };
   }
   onSetup() {}
-  onMount() {}
+  onMount() {
+    this.editor?.events.emit("SetInspector", {
+      verifyCompatibility: () => true,
+      component: () => {
+        if (!this.editor) return <React.Fragment />;
+        return (
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(2, 80px)",
+              padding: "6px",
+              gridGap: "4px",
+            }}
+          />
+        );
+      },
+    });
+  }
 }

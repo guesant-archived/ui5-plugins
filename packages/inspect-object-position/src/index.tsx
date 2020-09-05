@@ -19,6 +19,10 @@
 
 import * as React from "react";
 import { EditorPlugin } from "@ui5/shared-lib/lib/editor/EditorPlugin";
+import {
+  updateSelectedItems,
+  fnFunction,
+} from "@ui5/shared-lib/lib/template/update-selected-items";
 
 export default class InspectObjectPosition extends EditorPlugin {
   onRegisterPlugin() {
@@ -34,6 +38,19 @@ export default class InspectObjectPosition extends EditorPlugin {
       verifyCompatibility: () => true,
       component: () => {
         if (!this.editor) return <React.Fragment />;
+        const { template, editor } = this.editor.state;
+
+        const selectedObjects = template.model.fabricExported.objects.filter(
+          (_, idx) => editor.selectedObjects.includes(idx),
+        );
+
+        const updateAll = (fn: fnFunction) =>
+          this.editor?.onSetTemplate(
+            updateSelectedItems({ selectedItems: editor.selectedObjects })({
+              template,
+            })(fn),
+          );
+
         return (
           <div
             style={{

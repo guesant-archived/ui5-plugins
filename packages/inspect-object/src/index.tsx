@@ -19,13 +19,24 @@
 //endregion
 
 import * as React from "react";
+import styled from "styled-components";
 import { EditorPlugin } from "@ui5/shared-lib/lib/editor/EditorPlugin";
 import { TemplateObject } from "@fantastic-images/types";
+import { getSelectedObjects } from "./libs/get-selected-objects";
+import { showIfCompatible } from "./libs/show-if-compatible";
 
 export interface Inspector {
   verifyCompatibility: ({ object }: { object: TemplateObject }) => boolean;
   component: React.ElementType;
 }
+
+export type SelectedObjects = TemplateObject[];
+
+const AutoBorderBottom = styled.div`
+  > * {
+    border-bottom: 1px solid #e5e5e5;
+  }
+`;
 
 export default class InpectObject extends EditorPlugin {
   inspectors: Inspector[] = [];
@@ -41,5 +52,29 @@ export default class InpectObject extends EditorPlugin {
       this.inspectors.push(inspector);
     });
   }
-  onMount() {}
+  onMount() {
+    if (this.editor) {
+      this.editor.events.emit("SetEditorRightTab", () => [
+        { ui: { displayText: "Design" } },
+        () => {
+          if (!this.editor) return <React.Fragment />;
+          const { template, editor } = this.editor.state;
+          const selectedObjects = getSelectedObjects({ template, editor });
+          return (
+            this.editor && (
+              <div>
+                <AutoBorderBottom>
+                  {this.inspectors.map((inspector, idx) => (
+                    <React.Fragment key={idx}>
+                      {showIfCompatible({ selectedObjects })(inspector)()}
+                    </React.Fragment>
+                  ))}
+                </AutoBorderBottom>
+              </div>
+            )
+          );
+        },
+      ]);
+    }
+  }
 }

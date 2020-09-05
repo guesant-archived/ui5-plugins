@@ -1,0 +1,26 @@
+{
+  "name": "ui5-plugin-inspect-object",
+  "version": "0.0.0",
+  "main": "lib/index.js",
+  "module": "lib/index.js",
+  "devDependencies": {
+    "@types/fabric": "^3.6.8",
+    "@types/react": "^16.9.49",
+    "@types/react-dom": "^16.9.8",
+    "@types/styled-components": "^5.1.3",
+    "react": "^16.13.1",
+    "tslib": "^2.0.1",
+    "typescript": "^4.0.2"
+  },
+  "scripts": {
+    "start": "tsc -p tsconfig.json --declaration --watch",
+    "build": "npm run clean && tsc -p tsconfig.json --declaration",
+    "clean": "rm -rf lib"
+  },
+  "repository": "https://github.com/guesant/ui5-plugins.git",
+  "author": "Gabriel Rodrigues <jipacoding@gmail.com>",
+  "license": "GPL-3.0",
+  "files": [
+    "lib"
+  ],
+}

@@ -18,7 +18,14 @@
  */
 //endregion
 
+import * as React from "react";
+import { InputText } from "@ui5/react-user-interface/lib/Form/InputText";
 import { EditorPlugin } from "@ui5/shared-lib/lib/editor/EditorPlugin";
+import {
+  updateSelectedItems,
+  fnFunction,
+} from "@ui5/shared-lib/lib/template/update-selected-items";
+import { sharedProperty } from "@ui5/shared-lib/lib/shared-property";
 
 export default class InspectObjectFill extends EditorPlugin {
   onRegisterPlugin() {
@@ -29,5 +36,39 @@ export default class InspectObjectFill extends EditorPlugin {
     };
   }
   onSetup() {}
-  onMount() {}
+  onMount() {
+    this.editor?.events.emit("SetInspector", {
+      verifyCompatibility: ({ object: { type } }: any) =>
+        ["textbox"].includes(type),
+      component: () => {
+        if (!this.editor) return <React.Fragment />;
+
+        const { template, editor } = this.editor.state;
+        const selectedObjects = template.model.fabricExported.objects.filter(
+          (_, idx) => editor.selectedObjects.includes(idx),
+        );
+
+        const updateAll = (fn: fnFunction) => {
+          this.editor?.onSetTemplate(
+            updateSelectedItems({ selectedItems: editor.selectedObjects })({
+              template,
+            })(fn),
+          );
+        };
+
+        return (
+          <div style={{ padding: "6px" }}>
+            <InputText
+              type="color"
+              rightPreview={true}
+              value={sharedProperty(({ fill }) => fill, "")(selectedObjects)}
+              onChange={({ target: { value } }) => {
+                updateAll(() => ({ fill: value }));
+              }}
+            />
+          </div>
+        );
+      },
+    });
+  }
 }

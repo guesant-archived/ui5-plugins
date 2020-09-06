@@ -19,6 +19,12 @@
 //endregion
 
 import * as React from "react";
+import { InputText } from "@ui5/react-user-interface/lib/Form/InputText";
+import {
+  updateSelectedItems,
+  fnFunction,
+} from "@ui5/shared-lib/lib/template/update-selected-items";
+import { sharedProperty } from "@ui5/shared-lib/lib/shared-property";
 import { EditorPlugin } from "@ui5/shared-lib/lib/editor/EditorPlugin";
 
 interface DivProps extends React.HTMLAttributes<HTMLDivElement> {}
@@ -32,9 +38,14 @@ const Grid = ({ style, ...props }: DivProps) => (
       padding: "6px",
       gridGap: "4px",
       gridTemplateColumns: "repeat(8, 1fr)",
+      gridTemplateAreas: `"ff ff ff ff ff ff ff ff"`.trim(),
       ...style,
     }}
   />
+);
+
+const GridFontFamily = ({ style, ...props }: DivProps) => (
+  <div {...props} style={{ gridArea: "ff", ...style }} />
 );
 
 export default class InspectObjectFont extends EditorPlugin {
@@ -52,7 +63,37 @@ export default class InspectObjectFont extends EditorPlugin {
         ["textbox"].includes(type),
       component: () => {
         if (!this.editor) return <React.Fragment />;
-        return <Grid />;
+        const { template, editor } = this.editor.state;
+        const selectedObjects = template.model.fabricExported.objects.filter(
+          (_, idx) => editor.selectedObjects.includes(idx),
+        );
+        const updateAll = (fn: fnFunction) => {
+          this.editor?.onSetTemplate(
+            updateSelectedItems({ selectedItems: editor.selectedObjects })({
+              template,
+            })(fn),
+          );
+        };
+        return (
+          <Grid
+            children={
+              <GridFontFamily>
+                <InputText
+                  placeholder="Fonte"
+                  defaultValue={sharedProperty(
+                    ({ fontFamily }) => fontFamily,
+                    "",
+                  )(selectedObjects)}
+                  onBlur={({ target: { value } }) => {
+                    updateAll(() => ({
+                      fontFamily: value,
+                    }));
+                  }}
+                />
+              </GridFontFamily>
+            }
+          />
+        );
       },
     });
   }

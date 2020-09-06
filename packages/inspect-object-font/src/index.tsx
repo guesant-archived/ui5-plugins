@@ -20,12 +20,14 @@
 
 import * as React from "react";
 import { InputText } from "@ui5/react-user-interface/lib/Form/InputText";
+import { InputSelect } from "@ui5/react-user-interface/lib/Form/InputSelect";
 import {
   updateSelectedItems,
   fnFunction,
 } from "@ui5/shared-lib/lib/template/update-selected-items";
 import { sharedProperty } from "@ui5/shared-lib/lib/shared-property";
 import { EditorPlugin } from "@ui5/shared-lib/lib/editor/EditorPlugin";
+import { SCALE_FONT_WEIGHT, DISPLAY_FONT_WEIGHT } from "./scale-font-weight";
 
 interface DivProps extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -38,7 +40,10 @@ const Grid = ({ style, ...props }: DivProps) => (
       padding: "6px",
       gridGap: "4px",
       gridTemplateColumns: "repeat(8, 1fr)",
-      gridTemplateAreas: `"ff ff ff ff ff ff ff ff"`.trim(),
+      gridTemplateAreas: `
+      "ff ff ff ff ff ff ff ff"
+      "fw fw fw fw fw  .  .  ."
+      `.trim(),
       ...style,
     }}
   />
@@ -46,6 +51,10 @@ const Grid = ({ style, ...props }: DivProps) => (
 
 const GridFontFamily = ({ style, ...props }: DivProps) => (
   <div {...props} style={{ gridArea: "ff", ...style }} />
+);
+
+const GridFontWeight = ({ style, ...props }: DivProps) => (
+  <div {...props} style={{ gridArea: "fw", ...style }} />
 );
 
 export default class InspectObjectFont extends EditorPlugin {
@@ -77,20 +86,45 @@ export default class InspectObjectFont extends EditorPlugin {
         return (
           <Grid
             children={
-              <GridFontFamily>
-                <InputText
-                  placeholder="Fonte"
-                  defaultValue={sharedProperty(
-                    ({ fontFamily }) => fontFamily,
-                    "",
-                  )(selectedObjects)}
-                  onBlur={({ target: { value } }) => {
-                    updateAll(() => ({
-                      fontFamily: value,
-                    }));
-                  }}
+              <React.Fragment>
+                <GridFontFamily>
+                  <InputText
+                    placeholder="Fonte"
+                    defaultValue={sharedProperty(
+                      ({ fontFamily }) => fontFamily,
+                      "",
+                    )(selectedObjects)}
+                    onBlur={({ target: { value } }) => {
+                      updateAll(() => ({
+                        fontFamily: value,
+                      }));
+                    }}
+                  />
+                </GridFontFamily>
+                <GridFontWeight
+                  children={
+                    <InputSelect
+                      placeholder="Peso"
+                      value={sharedProperty(
+                        ({ fontWeight }) => fontWeight,
+                        "",
+                      )(selectedObjects)}
+                      onChange={({ target: { value } }) => {
+                        updateAll(() => ({ fontWeight: String(value) }));
+                      }}
+                      children={
+                        <React.Fragment>
+                          {SCALE_FONT_WEIGHT.map((i, idx) => (
+                            <option key={idx} value={i}>
+                              {DISPLAY_FONT_WEIGHT(i)}
+                            </option>
+                          ))}
+                        </React.Fragment>
+                      }
+                    />
+                  }
                 />
-              </GridFontFamily>
+              </React.Fragment>
             }
           />
         );

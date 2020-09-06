@@ -18,7 +18,24 @@
  */
 //endregion
 
+import * as React from "react";
 import { EditorPlugin } from "@ui5/shared-lib/lib/editor/EditorPlugin";
+
+interface DivProps extends React.HTMLAttributes<HTMLDivElement> {}
+
+const Grid = ({ style, ...props }: DivProps) => (
+  <div
+    {...props}
+    style={{
+      display: "grid",
+      width: "100%",
+      padding: "6px",
+      gridGap: "4px",
+      gridTemplateColumns: "repeat(8, 1fr)",
+      ...style,
+    }}
+  />
+);
 
 export default class InspectObjectFont extends EditorPlugin {
   onRegisterPlugin() {
@@ -29,5 +46,14 @@ export default class InspectObjectFont extends EditorPlugin {
     };
   }
   onSetup() {}
-  onMount() {}
+  onMount() {
+    this.editor?.events.emit("SetInspector", {
+      verifyCompatibility: ({ object: { type } }: any) =>
+        ["textbox"].includes(type),
+      component: () => {
+        if (!this.editor) return <React.Fragment />;
+        return <Grid />;
+      },
+    });
+  }
 }

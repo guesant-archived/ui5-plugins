@@ -21,6 +21,7 @@
 import * as React from "react";
 import { InputText } from "@ui5/react-user-interface/lib/Form/InputText";
 import { InputSelect } from "@ui5/react-user-interface/lib/Form/InputSelect";
+import { InputCombo } from "@ui5/react-user-interface/lib/Form/InputCombo";
 import {
   updateSelectedItems,
   fnFunction,
@@ -28,6 +29,7 @@ import {
 import { sharedProperty } from "@ui5/shared-lib/lib/shared-property";
 import { EditorPlugin } from "@ui5/shared-lib/lib/editor/EditorPlugin";
 import { SCALE_FONT_WEIGHT, DISPLAY_FONT_WEIGHT } from "./scale-font-weight";
+import { SCALE_FONT_SIZE } from "./scale-font-size";
 
 interface DivProps extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -42,7 +44,7 @@ const Grid = ({ style, ...props }: DivProps) => (
       gridTemplateColumns: "repeat(8, 1fr)",
       gridTemplateAreas: `
       "ff ff ff ff ff ff ff ff"
-      "fw fw fw fw fw  .  .  ."
+      "fw fw fw fw fw fs fs fs"
       `.trim(),
       ...style,
     }}
@@ -55,6 +57,10 @@ const GridFontFamily = ({ style, ...props }: DivProps) => (
 
 const GridFontWeight = ({ style, ...props }: DivProps) => (
   <div {...props} style={{ gridArea: "fw", ...style }} />
+);
+
+const GridFontSize = ({ style, ...props }: DivProps) => (
+  <div {...props} style={{ gridArea: "fs", ...style }} />
 );
 
 export default class InspectObjectFont extends EditorPlugin {
@@ -121,6 +127,34 @@ export default class InspectObjectFont extends EditorPlugin {
                           ))}
                         </React.Fragment>
                       }
+                    />
+                  }
+                />
+                <GridFontSize
+                  children={
+                    <InputCombo
+                      sharedProp={{
+                        value: sharedProperty(
+                          ({ fontSize }) => fontSize,
+                          "",
+                        )(selectedObjects),
+                      }}
+                      wrapperProps={{
+                        onChangeCapture: ({ target: { value } }: any) => {
+                          updateAll(() => ({ fontSize: parseFloat(value) }));
+                        },
+                      }}
+                      selectProps={{
+                        children: (
+                          <React.Fragment>
+                            {SCALE_FONT_SIZE.map((i, idx) => (
+                              <option key={idx} value={i}>
+                                {i}
+                              </option>
+                            ))}
+                          </React.Fragment>
+                        ),
+                      }}
                     />
                   }
                 />

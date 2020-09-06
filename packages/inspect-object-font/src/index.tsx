@@ -22,6 +22,8 @@ import * as React from "react";
 import { InputText } from "@ui5/react-user-interface/lib/Form/InputText";
 import { InputSelect } from "@ui5/react-user-interface/lib/Form/InputSelect";
 import { InputCombo } from "@ui5/react-user-interface/lib/Form/InputCombo";
+import { InputRadioGroup } from "@ui5/react-user-interface/lib/Form/InputRadioGroup";
+import { InputRadioItem } from "@ui5/react-user-interface/lib/Form/InputRadioItem";
 import {
   updateSelectedItems,
   fnFunction,
@@ -45,6 +47,7 @@ const Grid = ({ style, ...props }: DivProps) => (
       gridTemplateAreas: `
       "ff ff ff ff ff ff ff ff"
       "fw fw fw fw fw fs fs fs"
+      "ta ta ta ta  .  .  .  ."
       `.trim(),
       ...style,
     }}
@@ -61,6 +64,10 @@ const GridFontWeight = ({ style, ...props }: DivProps) => (
 
 const GridFontSize = ({ style, ...props }: DivProps) => (
   <div {...props} style={{ gridArea: "fs", ...style }} />
+);
+
+const GridTextAlign = ({ style, ...props }: DivProps) => (
+  <div {...props} style={{ gridArea: "ta", ...style }} />
 );
 
 export default class InspectObjectFont extends EditorPlugin {
@@ -155,6 +162,67 @@ export default class InspectObjectFont extends EditorPlugin {
                           </React.Fragment>
                         ),
                       }}
+                    />
+                  }
+                />
+                <GridTextAlign
+                  children={
+                    <InputRadioGroup
+                      children={
+                        <React.Fragment>
+                          {[
+                            [
+                              {
+                                defaultValue: "left",
+                              },
+                              ">",
+                              { title: "Alinhado à Esquerda" },
+                            ],
+                            [
+                              {
+                                defaultValue: "center",
+                              },
+                              "-",
+                              { title: "Centralizado" },
+                            ],
+                            [
+                              {
+                                defaultValue: "right",
+                              },
+                              "<",
+                              { title: "Alinhado à Direita" },
+                            ],
+                          ]
+                            .map(([input, ...args]) => [
+                              {
+                                ...(input as any),
+                                name: "editor-inspect-object-font-text-align",
+                                defaultChecked:
+                                  sharedProperty(({ textAlign }) => textAlign)(
+                                    selectedObjects,
+                                  ) === (input as any).defaultValue,
+                              },
+                              ...args,
+                            ])
+                            .map(([input, text, wrapper], idx) => (
+                              <InputRadioItem
+                                key={idx}
+                                wrapperProps={wrapper}
+                                children={
+                                  <span
+                                    style={{
+                                      padding: "7px 0px",
+                                      fontFamily: "monospace",
+                                    }}
+                                  >
+                                    {text}
+                                  </span>
+                                }
+                                {...input}
+                              />
+                            ))}
+                        </React.Fragment>
+                      }
                     />
                   }
                 />

@@ -19,6 +19,13 @@
 //endregion
 
 import { EditorPlugin } from "@ui5/shared-lib/lib/editor/EditorPlugin";
+import { Canvas } from "fabric/fabric-impl";
+
+interface PanCanvas extends Canvas {
+  isDragging: boolean;
+  lastPosX: number;
+  lastPosY: number;
+}
 
 export default class Pan extends EditorPlugin {
   onRegisterPlugin() {
@@ -30,4 +37,32 @@ export default class Pan extends EditorPlugin {
   }
   onSetup() {}
   onMount() {}
+  async onSetupCanvas() {
+    if (this.canvas) {
+      this.canvas.on("mouse:down", function (this: PanCanvas, { e }: any) {
+        if (e.altKey) {
+          this.isDragging = true;
+          this.selection = false;
+          this.lastPosX = e.clientX;
+          this.lastPosY = e.clientY;
+        }
+      });
+      this.canvas.on("mouse:move", function (this: PanCanvas, { e }: any) {
+        if (this.isDragging) {
+          const vpt = this.viewportTransform || [];
+          vpt[4] += e.clientX - this.lastPosX;
+          vpt[5] += e.clientY - this.lastPosY;
+          this.setViewportTransform(this.viewportTransform as any);
+          this.requestRenderAll();
+          this.lastPosX = e.clientX;
+          this.lastPosY = e.clientY;
+        }
+      });
+      this.canvas.on("mouse:up", function (this: PanCanvas) {
+        this.setViewportTransform(this.viewportTransform as any);
+        this.isDragging = false;
+        this.selection = true;
+      });
+    }
+  }
 }

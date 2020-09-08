@@ -18,7 +18,12 @@
  */
 //endregion
 
+import { findIndexByObject } from "@ui5/shared-lib/lib/canvas/find-index-by-object";
 import { EditorPlugin } from "@ui5/shared-lib/lib/editor/EditorPlugin";
+import { Canvas, Object } from "fabric/fabric-impl";
+
+const reactive = (canvas: Canvas) => (trigger: string, fn: any) =>
+  trigger.split(" ").forEach((i) => canvas.on(i, fn));
 
 export default class SyncSelection extends EditorPlugin {
   onRegisterPlugin() {
@@ -30,4 +35,26 @@ export default class SyncSelection extends EditorPlugin {
   }
   onSetup() {}
   onMount() {}
+  async onSetupCanvas() {
+    if (this.canvas) {
+      const _reactive = reactive(this.canvas);
+      const findIndexByObject_ = findIndexByObject(this.canvas);
+      _reactive("selection:created selection:updated", (e: any) => {
+        this.editor?.onSetEditor({
+          ...this.editor.state.editor,
+          selectedObjects: e.selected.map(
+            (object: Object) =>
+              findIndexByObject_(object) -
+              (this.editor?.state.template.model.staticImages.length || 0),
+          ),
+        });
+      });
+      _reactive("selection:cleared", () => {
+        this.editor?.onSetEditor({
+          ...this.editor.state.editor,
+          selectedObjects: [],
+        });
+      });
+    }
+  }
 }

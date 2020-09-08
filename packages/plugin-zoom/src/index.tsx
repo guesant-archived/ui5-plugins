@@ -19,6 +19,8 @@
 //endregion
 
 import { EditorPlugin } from "@ui5/shared-lib/lib/editor/EditorPlugin";
+import { fabric } from "fabric";
+import { Canvas } from "fabric/fabric-impl";
 
 export default class Zoom extends EditorPlugin {
   onRegisterPlugin() {
@@ -30,4 +32,17 @@ export default class Zoom extends EditorPlugin {
   }
   onSetup() {}
   onMount() {}
+  async onSetupCanvas() {
+    if (this.canvas) {
+      this.canvas.on("mouse:wheel", function (this: Canvas, { e }: any) {
+        e.preventDefault();
+        e.stopPropagation();
+        this.zoomToPoint(
+          new fabric.Point(e.offsetX, e.offsetY),
+          Math.max(0.45, Math.min(20, this.getZoom() * 0.999 ** e.deltaY)),
+        );
+        this.requestRenderAll();
+      });
+    }
+  }
 }

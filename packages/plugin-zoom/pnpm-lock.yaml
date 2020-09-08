@@ -1,12 +1,17 @@
 dependencies:
   '@ui5/shared-lib': 'link:../../../ui5-monorepo/packages/shared-lib'
 devDependencies:
+  '@types/fabric': 3.6.8
   '@types/react': 16.9.49
   '@types/react-dom': 16.9.8
   tslib: 2.0.1
   typescript: 4.0.2
 lockfileVersion: 5.1
 packages:
+  /@types/fabric/3.6.8:
+    dev: true
+    resolution:
+      integrity: sha512-EqRgmWXQ0Hh9JKH8M0KyoeFLBt1TuQ88cLICynd8xXWM052mINp1ijdfvFY/jCN5QMI6ctv2gbI1kBkDFETSSQ==
   /@types/prop-types/15.7.3:
     dev: true
     resolution:
@@ -40,6 +45,7 @@ packages:
     resolution:
       integrity: sha512-e4ERvRV2wb+rRZ/IQeb3jm2VxBsirQLpQhdxplZ2MEzGvDkkMmPglecnNDfSUBivMjP93vRbngYYDQqQ/78bcQ==
 specifiers:
+  '@types/fabric': ^3.6.8
   '@types/react': ^16.9.49
   '@types/react-dom': ^16.9.8
   '@ui5/shared-lib': 'link:../../../ui5-monorepo/packages/shared-lib'

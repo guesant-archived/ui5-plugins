@@ -24,10 +24,6 @@ export const isAllCompatible = ({ verifyCompatibility }: Inspector) => ({
   selectedObjects,
 }: {
   selectedObjects: SelectedObjects;
-}) => {
-  console.log(selectedObjects);
-  return (
-    selectedObjects.length &&
-    selectedObjects.every((object) => verifyCompatibility({ object }))
-  );
-};
+}) =>
+  selectedObjects.length &&
+  selectedObjects.every((object) => verifyCompatibility({ object }));

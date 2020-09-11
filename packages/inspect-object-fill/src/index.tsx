@@ -36,8 +36,8 @@ export default class InspectObjectFill extends EditorPlugin {
     };
   }
   onSetup() {}
-  onMount() {
-    this.editor?.events.emit("SetInspector", {
+  async onMount() {
+    await this.editor?.events.emit("SetInspector", {
       verifyCompatibility: ({ object: { type } }: any) =>
         ["textbox"].includes(type),
       component: () => {

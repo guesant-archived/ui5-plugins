@@ -29,5 +29,5 @@ export default class SyncObjects extends EditorPlugin {
     };
   }
   onSetup() {}
-  onMount() {}
+  async onMount() {}
 }

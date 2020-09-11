@@ -52,9 +52,9 @@ export default class InpectObject extends EditorPlugin {
       this.inspectors.push(inspector);
     });
   }
-  onMount() {
+  async onMount() {
     if (this.editor) {
-      this.editor.events.emit("SetEditorRightTab", () => [
+      await this.editor.events.emit("SetEditorRightTab", [
         { ui: { displayText: "Design" } },
         () => {
           if (!this.editor) return <React.Fragment />;

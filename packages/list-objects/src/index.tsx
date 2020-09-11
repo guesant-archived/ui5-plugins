@@ -34,9 +34,9 @@ export default class ListObjects extends EditorPlugin {
     };
   }
   onSetup() {}
-  onMount() {
+  async onMount() {
     if (this.editor) {
-      this.editor.events.emit("SetEditorLeftTab", () => [
+      await this.editor.events.emit("SetEditorLeftTab", [
         { ui: { displayText: "Camadas" } },
         () => {
           if (!this.editor) return <React.Fragment />;

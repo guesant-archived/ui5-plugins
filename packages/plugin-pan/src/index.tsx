@@ -36,7 +36,7 @@ export default class Pan extends EditorPlugin {
     };
   }
   onSetup() {}
-  onMount() {}
+  async onMount() {}
   async onSetupCanvas() {
     if (this.canvas) {
       this.canvas.on("mouse:down", function (this: PanCanvas, { e }: any) {

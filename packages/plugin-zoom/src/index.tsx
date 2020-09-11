@@ -31,7 +31,7 @@ export default class Zoom extends EditorPlugin {
     };
   }
   onSetup() {}
-  onMount() {}
+  async onMount() {}
   async onSetupCanvas() {
     if (this.canvas) {
       this.canvas.on("mouse:wheel", function (this: Canvas, { e }: any) {

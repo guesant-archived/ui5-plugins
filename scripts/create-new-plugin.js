@@ -66,7 +66,7 @@ async function main() {
 
   chdir(cwd_);
   console.log(`\n$ cd ${relative(cwd(), dest)}`);
-  console.log(`\n$ pnpm add @ui5/shared-lib`);
+  console.log(`$ pnpm add @ui5/shared-lib`);
 }
 
 main();

@@ -39,8 +39,8 @@ export default class EditorLeft extends EditorPlugin {
       this.tabs.push(tab);
     });
   }
-  onMount() {
-    this.editor?.events.emit("SetEditorComponent", [
+  async onMount() {
+    await this.editor?.events.emit("SetEditorComponent", [
       "left",
       () => {
         return (

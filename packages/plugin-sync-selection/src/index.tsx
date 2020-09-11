@@ -34,7 +34,7 @@ export default class SyncSelection extends EditorPlugin {
     };
   }
   onSetup() {}
-  onMount() {}
+  async onMount() {}
   async onSetupCanvas() {
     if (this.canvas) {
       const _reactive = reactive(this.canvas);

@@ -29,5 +29,5 @@ export default class InspectObjectAlignment extends EditorPlugin {
     };
   }
   onSetup() {}
-  onMount() {}
+  async onMount() {}
 }

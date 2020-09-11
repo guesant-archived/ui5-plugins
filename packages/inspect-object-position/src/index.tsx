@@ -36,8 +36,8 @@ export default class InspectObjectPosition extends EditorPlugin {
     };
   }
   onSetup() {}
-  onMount() {
-    this.editor?.events.emit("SetInspector", {
+  async onMount() {
+    await this.editor?.events.emit("SetInspector", {
       verifyCompatibility: () => true,
       component: () => {
         if (!this.editor) return <React.Fragment />;

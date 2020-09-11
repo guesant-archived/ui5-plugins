@@ -65,7 +65,8 @@ export default class InspectObjectPosition extends EditorPlugin {
               prefix={prefix}
               defaultValue={currentValue}
               onBlur={({ target: { value } }) => {
-                value !== currentValue && updateAll(() => ({ [key]: value }));
+                value !== currentValue &&
+                  updateAll(() => ({ [key]: parseFloat(value) }));
               }}
             />
           );
@@ -89,7 +90,7 @@ export default class InspectObjectPosition extends EditorPlugin {
                           [scale]: parseFloat(value) / object[key],
                         }
                       : {
-                          [key]: value,
+                          [key]: parseFloat(value),
                         },
                   );
               }}

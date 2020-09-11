@@ -107,7 +107,7 @@ export default class InspectObjectFont extends EditorPlugin {
                       ({ fontFamily }) => fontFamily,
                       "",
                     )(selectedObjects)}
-                    onBlur={({ target: { value } }) => {
+                    onChange={({ target: { value } }) => {
                       updateAll(() => ({
                         fontFamily: value,
                       }));

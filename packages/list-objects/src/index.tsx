@@ -25,6 +25,8 @@ import { EditorPlugin } from "@ui5/shared-lib/lib/editor/EditorPlugin";
 import { smartSelection } from "@ui5/shared-lib/lib/editor/selection/smart-selection";
 import { isSelected } from "@ui5/shared-lib/lib/editor/selection/is-selected";
 
+const tabCamadas = Symbol("camadas");
+
 export default class ListObjects extends EditorPlugin {
   onRegisterPlugin() {
     return {
@@ -37,51 +39,54 @@ export default class ListObjects extends EditorPlugin {
   async onMount() {
     if (this.editor) {
       await this.editor.events.emit("SetEditorLeftTab", [
-        { ui: { displayText: "Camadas" } },
-        () => {
-          if (!this.editor) return <React.Fragment />;
-          const { editor, template } = this.editor.state;
+        { controlledIndex: tabCamadas },
+        [
+          { ui: { displayText: "Camadas" } },
+          () => {
+            if (!this.editor) return <React.Fragment />;
+            const { editor, template } = this.editor.state;
 
-          const updateSelection = (selectedObjects: number[]) => {
-            this.editor?.onSetEditor({
-              ...editor,
-              selectedObjects,
-            });
-          };
+            const updateSelection = (selectedObjects: number[]) => {
+              this.editor?.onSetEditor({
+                ...editor,
+                selectedObjects,
+              });
+            };
 
-          const _smartSelection = smartSelection(updateSelection)(
-            editor.selectedObjects,
-          );
+            const _smartSelection = smartSelection(updateSelection)(
+              editor.selectedObjects,
+            );
 
-          return (
-            this.editor && (
-              <div style={{ height: "100%" }}>
-                <LayerList
-                  style={{ height: "100%" }}
-                  onClick={() => updateSelection([])}
-                >
-                  {template.model.fabricExported.objects.map((obj, idx) => (
-                    <React.Fragment key={idx}>
-                      <LayerListItem
-                        className={
-                          isSelected(editor.selectedObjects)(idx)
-                            ? "active"
-                            : ""
-                        }
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          _smartSelection(idx)(e);
-                        }}
-                      >
-                        {obj.type}
-                      </LayerListItem>
-                    </React.Fragment>
-                  ))}
-                </LayerList>
-              </div>
-            )
-          );
-        },
+            return (
+              this.editor && (
+                <div style={{ height: "100%" }}>
+                  <LayerList
+                    style={{ height: "100%" }}
+                    onClick={() => updateSelection([])}
+                  >
+                    {template.model.fabricExported.objects.map((obj, idx) => (
+                      <React.Fragment key={idx}>
+                        <LayerListItem
+                          className={
+                            isSelected(editor.selectedObjects)(idx)
+                              ? "active"
+                              : ""
+                          }
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            _smartSelection(idx)(e);
+                          }}
+                        >
+                          {obj.type}
+                        </LayerListItem>
+                      </React.Fragment>
+                    ))}
+                  </LayerList>
+                </div>
+              )
+            );
+          },
+        ],
       ]);
     }
   }

@@ -29,5 +29,5 @@ export default class Plugin extends EditorPlugin {
     };
   }
   onSetup() {}
-  onMount() {}
+  async onMount() {}
 }

@@ -1,7 +1,6 @@
 //region Preamble
 /**
- * ui5-plugins - awesome plugins for the ultimate
- * template-based image generator ui5
+ * https://github.com/guesant/ui5-monorepo
  * Copyright (C) 2020 Gabriel Rodrigues
  *
  * This program is free software: you can redistribute it and/or modify

@@ -64,7 +64,7 @@ export default class InspectObjectPosition extends EditorPlugin {
               {...(typeof idx === "number" ? { key: idx } : {})}
               prefix={prefix}
               defaultValue={currentValue}
-              onBlur={({ target: { value } }) => {
+              onChange={({ target: { value } }) => {
                 value !== currentValue &&
                   updateAll(() => ({ [key]: parseFloat(value) }));
               }}
@@ -82,7 +82,7 @@ export default class InspectObjectPosition extends EditorPlugin {
               {...(typeof idx === "number" ? { key: idx } : {})}
               prefix={prefix}
               defaultValue={currentValue}
-              onBlur={({ target: { value } }) => {
+              onChange={({ target: { value } }) => {
                 value !== currentValue &&
                   updateAll(({ object }) =>
                     object.type === "image"

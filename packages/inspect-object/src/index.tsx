@@ -38,6 +38,8 @@ const AutoBorderBottom = styled.div`
   }
 `;
 
+const tabDesign = Symbol("design");
+
 export default class InpectObject extends EditorPlugin {
   inspectors: Inspector[] = [];
   onRegisterPlugin() {
@@ -55,25 +57,28 @@ export default class InpectObject extends EditorPlugin {
   async onMount() {
     if (this.editor) {
       await this.editor.events.emit("SetEditorRightTab", [
-        { ui: { displayText: "Design" } },
-        () => {
-          if (!this.editor) return <React.Fragment />;
-          const { template, editor } = this.editor.state;
-          const selectedObjects = getSelectedObjects({ template, editor });
-          return (
-            this.editor && (
-              <div>
-                <AutoBorderBottom>
-                  {this.inspectors.map((inspector, idx) => (
-                    <React.Fragment key={idx}>
-                      {showIfCompatible({ selectedObjects })(inspector)()}
-                    </React.Fragment>
-                  ))}
-                </AutoBorderBottom>
-              </div>
-            )
-          );
-        },
+        { controlledIndex: tabDesign },
+        [
+          { ui: { displayText: "Design" } },
+          () => {
+            if (!this.editor) return <React.Fragment />;
+            const { template, editor } = this.editor.state;
+            const selectedObjects = getSelectedObjects({ template, editor });
+            return (
+              this.editor && (
+                <div>
+                  <AutoBorderBottom>
+                    {this.inspectors.map((inspector, idx) => (
+                      <React.Fragment key={idx}>
+                        {showIfCompatible({ selectedObjects })(inspector)()}
+                      </React.Fragment>
+                    ))}
+                  </AutoBorderBottom>
+                </div>
+              )
+            );
+          },
+        ],
       ]);
     }
   }

@@ -18,7 +18,10 @@
  */
 //endregion
 
+import * as React from "react";
 import { EditorPlugin } from "@ui5/shared-lib/lib/editor/EditorPlugin";
+
+const tabStatic = Symbol("static");
 
 export default class ListStatic extends EditorPlugin {
   onRegisterPlugin() {
@@ -29,5 +32,18 @@ export default class ListStatic extends EditorPlugin {
     };
   }
   onSetup() {}
-  async onMount() {}
+  async onMount() {
+    if (this.editor) {
+      await this.editor.events.emit("SetEditorLeftTab", [
+        { controlledIndex: tabStatic },
+        [
+          { ui: { displayText: "Estático" } },
+          () => {
+            if (!this.editor) return <React.Fragment />;
+            return <div></div>;
+          },
+        ],
+      ]);
+    }
+  }
 }

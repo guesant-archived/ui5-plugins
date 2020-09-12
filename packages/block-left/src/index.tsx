@@ -19,14 +19,28 @@
 //endregion
 
 import * as React from "react";
+import { EventEmitter } from "@ui5/shared-lib/lib/EventEmitter";
 import { EditorPlugin } from "@ui5/shared-lib/lib/editor/EditorPlugin";
 import {
   VerticalTab,
   VerticalTabItem,
 } from "@ui5/react-user-interface/lib/VerticalTabs";
 
+interface MetaInfo {
+  controlledIndex: number | string | any;
+}
+
 export default class EditorLeft extends EditorPlugin {
   tabs: VerticalTabItem[] = [];
+  events: EventEmitter = new EventEmitter();
+  controlledIndex: Record<MetaInfo["controlledIndex"], number> = {};
+  selectedIndex: number = 0;
+  constructor() {
+    super();
+    this.events.on("SetSelectedIndex", (index: number) => {
+      this.selectedIndex = index;
+    });
+  }
   onRegisterPlugin() {
     return {
       info: {
@@ -35,17 +49,46 @@ export default class EditorLeft extends EditorPlugin {
     };
   }
   onSetup() {
-    this.editor?.events.on("SetEditorLeftTab", (tab: VerticalTabItem) => {
-      this.tabs.push(tab);
-    });
+    this.editor?.events.on(
+      "SetEditorLeftTab",
+      ([{ controlledIndex }, tab]: [MetaInfo, VerticalTabItem]) => {
+        const tabIndex = this.tabs.push(tab) - 1;
+        !["undefined"].includes(typeof controlledIndex) &&
+          (this.controlledIndex[controlledIndex] = tabIndex);
+      },
+    );
+    this.editor?.events.on(
+      "SetEditorLeftActiveTab",
+      (controlledIndex: MetaInfo["controlledIndex"]) => {
+        typeof this.controlledIndex[controlledIndex] !== "undefined" &&
+          this.events.syncEmit(
+            "SetSelectedIndex",
+            this.controlledIndex[controlledIndex],
+          );
+      },
+    );
   }
   async onMount() {
     await this.editor?.events.emit("SetEditorComponent", [
       "left",
       () => {
+        const [selectedIndex, setSelectedIndex] = React.useState(
+          this.selectedIndex,
+        );
+        this.events.on("SetSelectedIndex", (index: number) => {
+          setSelectedIndex(index);
+        });
         return (
           <div>
-            <VerticalTab tabs={this.tabs} />
+            <VerticalTab
+              tabsProps={{
+                selectedIndex: selectedIndex,
+                onSelect: (index) => {
+                  this.events.syncEmit("SetSelectedIndex", index);
+                },
+              }}
+              tabs={this.tabs}
+            />
           </div>
         );
       },

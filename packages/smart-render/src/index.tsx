@@ -47,6 +47,7 @@ export default class SmartRender extends EditorPlugin {
       await fiCore.fabric.render.renderTemplate({ fabric })({
         canvas,
       })(template);
+      this.editor.events.emit("ApplySelection");
     }
   }
   async smartRender([currTemplate, newTemplate]: [Template, Template]) {

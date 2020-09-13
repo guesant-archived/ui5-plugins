@@ -46,7 +46,9 @@ export default class SyncSelection extends EditorPlugin {
             selectedObjects: e.selected.map(
               (object: Object) =>
                 findIndexByObject_(object) -
-                (this.editor?.state.template.model.staticImages.length || 0),
+                (this.editor?.state.template.model.staticImages.filter(
+                  ({ position }) => position === "back",
+                ).length || 0),
             ),
           });
       });

@@ -85,16 +85,20 @@ export default class SmartRender extends EditorPlugin {
     this.editor?.events.on(
       "EditorOnSetTemplate",
       (
-        []: [Template, Template],
+        [currTemplate, newTemplate]: [Template, Template],
         {
+          render = true,
           forceRender = false,
         }: {
+          render?: boolean;
           forceRender?: boolean;
         } = {},
       ) => {
-        switch (forceRender ? "forceRender" : "") {
+        switch (forceRender ? "forceRender" : render ? "smartRender" : "") {
           case "forceRender":
             return this.forceRender();
+          case "smartRender":
+            return this.smartRender([currTemplate, newTemplate]);
           default:
             break;
         }

@@ -34,7 +34,8 @@ export const getChanges = (
 ) =>
   objects
     .map((obj, idx) => {
-      const canvasIndex = staticImages.length + idx;
+      const canvasIndex =
+        staticImages.filter(({ position }) => position === "back").length + idx;
       const canvasItem = (canvas as any).item(canvasIndex) as FabricObject;
       const canvasObj = canvasItem.toObject();
       return {

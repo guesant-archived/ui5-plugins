@@ -21,7 +21,12 @@
 import equal from "deep-equal";
 import { fabric } from "fabric";
 import * as fiCore from "@fantastic-images/core";
+import { Template } from "@fantastic-images/types/src/Template";
 import { EditorPlugin } from "@ui5/shared-lib/lib/editor/EditorPlugin";
+import { getChanges } from "./get-changes";
+
+const hasOwnProperty = (object: any, index: string) =>
+  Object.prototype.hasOwnProperty.bind(object, index);
 
 const needsFullRender = ([currentTemplate, newTemplate]: [
   Template,
@@ -47,6 +52,20 @@ export default class SmartRender extends EditorPlugin {
   async smartRender([currTemplate, newTemplate]: [Template, Template]) {
     if (needsFullRender([currTemplate, newTemplate])) {
       await this.forceRender();
+    } else {
+      if (this.editor && this.canvas) {
+        const { canvas } = this;
+        const { template } = this.editor.state;
+        const changes = getChanges(canvas, template);
+        if (changes.length) {
+          changes.forEach(({ canvasItem, changedProperties }) => {
+            canvasItem.set(changedProperties);
+            ["left", "top"].some((i) => hasOwnProperty(changedProperties, i)) &&
+              canvasItem.setCoords();
+          });
+          canvas.requestRenderAll();
+        }
+      }
     }
   }
   onRegisterPlugin() {

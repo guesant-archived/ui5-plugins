@@ -18,9 +18,20 @@
  */
 //endregion
 
+import { fabric } from "fabric";
+import * as fiCore from "@fantastic-images/core";
 import { EditorPlugin } from "@ui5/shared-lib/lib/editor/EditorPlugin";
 
 export default class SmartRender extends EditorPlugin {
+  async forceRender() {
+    if (this.editor && this.canvas) {
+      const { canvas } = this;
+      const { template } = this.editor.state;
+      await fiCore.fabric.render.renderTemplate({ fabric })({
+        canvas,
+      })(template);
+    }
+  }
   onRegisterPlugin() {
     return {
       info: {
@@ -28,6 +39,8 @@ export default class SmartRender extends EditorPlugin {
       },
     };
   }
-  onSetup() {}
+  onSetup() {
+    this.editor?.events.on("CanvasForceRender", () => this.forceRender());
+  }
   async onMount() {}
 }

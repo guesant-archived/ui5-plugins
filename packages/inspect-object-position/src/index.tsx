@@ -63,7 +63,7 @@ export default class InspectObjectPosition extends EditorPlugin {
             <InputText
               {...(typeof idx === "number" ? { key: idx } : {})}
               prefix={prefix}
-              defaultValue={currentValue}
+              value={currentValue}
               onChange={({ target: { value } }) => {
                 value !== currentValue &&
                   updateAll(() => ({ [key]: parseFloat(value) }));
@@ -81,7 +81,7 @@ export default class InspectObjectPosition extends EditorPlugin {
             <InputText
               {...(typeof idx === "number" ? { key: idx } : {})}
               prefix={prefix}
-              defaultValue={currentValue}
+              value={currentValue}
               onChange={({ target: { value } }) => {
                 value !== currentValue &&
                   updateAll(({ object }) =>
@@ -97,7 +97,6 @@ export default class InspectObjectPosition extends EditorPlugin {
             />
           );
         };
-
         return (
           <div
             style={{

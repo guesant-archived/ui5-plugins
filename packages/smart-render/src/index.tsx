@@ -84,4 +84,7 @@ export default class SmartRender extends EditorPlugin {
     );
   }
   async onMount() {}
+  async onSetupCanvas() {
+    await this.forceRender();
+  }
 }

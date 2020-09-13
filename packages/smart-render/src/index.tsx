@@ -32,6 +32,7 @@ export default class SmartRender extends EditorPlugin {
       })(template);
     }
   }
+  async smartRender() {}
   onRegisterPlugin() {
     return {
       info: {
@@ -41,6 +42,9 @@ export default class SmartRender extends EditorPlugin {
   }
   onSetup() {
     this.editor?.events.on("CanvasForceRender", () => this.forceRender());
+    this.editor?.events.on("CanvasSmartRender", (arg0: any) =>
+      this.smartRender(arg0),
+    );
   }
   async onMount() {}
 }

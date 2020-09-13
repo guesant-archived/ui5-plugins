@@ -18,12 +18,15 @@
   "author": "Gabriel Rodrigues <jipacoding@gmail.com>",
   "license": "GPL-3.0",
   "peerDependencies": {
+    "fabric": "^4.1.0",
     "react": ">=16"
   },
   "files": [
     "lib"
   ],
   "dependencies": {
+    "@fantastic-images/types": "link:../../../fantastic-images/packages/types",
+    "@types/fabric": "^3.6.8",
     "@ui5/shared-lib": "link:../../../ui5-monorepo/packages/shared-lib"
   }
 }

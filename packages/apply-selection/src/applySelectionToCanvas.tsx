@@ -32,7 +32,10 @@ export const applySelectionToCanvas = async (
       .getObjects()
       .filter((obj) =>
         selectedObjects.includes(
-          findIndexByObject(canvas)(obj) - template.model.staticImages.length,
+          findIndexByObject(canvas)(obj) -
+            template.model.staticImages.filter(
+              ({ position }) => position === "back",
+            ).length,
         ),
       );
     canvas.discardActiveObject(new Event("NO_SYNC"));

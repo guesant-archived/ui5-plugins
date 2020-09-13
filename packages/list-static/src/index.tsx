@@ -30,7 +30,7 @@ import { supportsFileReaderAPI } from "./supportsFileReaderAPI";
 
 const {
   model: {
-    mutations: { ADD_STATIC_IMAGE },
+    mutations: { ADD_STATIC_IMAGE, REMOVE_STATIC_IMAGE },
   },
 } = lib;
 
@@ -57,6 +57,11 @@ export default class ListStatic extends EditorPlugin {
             const {
               model: { staticImages },
             } = template;
+            const removeStatic = async (idxArr: number[]) => {
+              await this.editor?.onSetTemplate(
+                REMOVE_STATIC_IMAGE({ idx: idxArr })(template),
+              );
+            };
             const loadImage = async (position: "front" | "back") => {
               if (!supportsFileReaderAPI) return;
               const input = document.createElement("input");
@@ -110,6 +115,13 @@ export default class ListStatic extends EditorPlugin {
                                     }}
                                   />
                                   <p>Imagem Estática</p>
+                                  <button
+                                    style={{ marginLeft: "auto" }}
+                                    onClick={async () =>
+                                      await removeStatic([idx])
+                                    }
+                                    children={"x"}
+                                  />
                                 </div>
                               </LayerListItem>
                             ))}

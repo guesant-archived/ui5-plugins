@@ -58,11 +58,13 @@ export default class SmartRender extends EditorPlugin {
         const { template } = this.editor.state;
         const changes = getChanges(canvas, template);
         if (changes.length) {
+          canvas.discardActiveObject(new Event("NO_SYNC"));
           changes.forEach(({ canvasItem, changedProperties }) => {
             canvasItem.set(changedProperties);
             ["left", "top"].some((i) => hasOwnProperty(changedProperties, i)) &&
               canvasItem.setCoords();
           });
+          this.editor.events.emit("ApplySelection", false);
           canvas.requestRenderAll();
         }
       }

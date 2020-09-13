@@ -19,6 +19,7 @@
 //endregion
 
 import { EditorPlugin } from "@ui5/shared-lib/lib/editor/EditorPlugin";
+import { applySelectionToCanvas } from "./applySelectionToCanvas";
 
 export default class ApplySelection extends EditorPlugin {
   onRegisterPlugin() {
@@ -28,6 +29,18 @@ export default class ApplySelection extends EditorPlugin {
       },
     };
   }
-  onSetup() {}
+  async applySelection(render = true) {
+    if (this.editor && this.canvas) {
+      const { canvas } = this;
+      const { template, editor } = this.editor.state;
+      await applySelectionToCanvas(canvas, template, editor.selectedObjects);
+      render && canvas.requestRenderAll();
+    }
+  }
+  onSetup() {
+    this.editor?.events.on("ApplySelection", (render: boolean) =>
+      this.applySelection(render),
+    );
+  }
   async onMount() {}
 }

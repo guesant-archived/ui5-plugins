@@ -20,6 +20,10 @@
 
 import * as React from "react";
 import { EditorPlugin } from "@ui5/shared-lib/lib/editor/EditorPlugin";
+import { LayerList } from "@ui5/react-user-interface/lib/LayerList";
+import { LayerListItem } from "@ui5/react-user-interface/lib/LayerListItem";
+import { LayerListHeader } from "@ui5/react-user-interface/lib/LayerListHeader";
+import { TemplateStaticImage } from "@fantastic-images/types/src/TemplateStaticImage";
 
 const tabStatic = Symbol("static");
 
@@ -40,7 +44,56 @@ export default class ListStatic extends EditorPlugin {
           { ui: { displayText: "Estático" } },
           () => {
             if (!this.editor) return <React.Fragment />;
-            return <div></div>;
+            const { template } = this.editor.state;
+            const {
+              model: { staticImages },
+            } = template;
+
+            return (
+              <div>
+                <ul>
+                  {([
+                    ["front", "Ao topo"],
+                    ["back", "Ao fundo"],
+                  ] as ["front" | "back", string][]).map(
+                    ([position, description], idx) => (
+                      <li key={idx}>
+                        <LayerListHeader>{description}</LayerListHeader>
+                        <LayerList>
+                          {staticImages
+                            .map(
+                              (i, idx) =>
+                                [i, idx] as [TemplateStaticImage, number],
+                            )
+                            .filter(([i]) => i.position === position)
+                            .map(([{ url }, idx]) => (
+                              <LayerListItem tabIndex={0} key={idx}>
+                                <div
+                                  style={{
+                                    width: "100%",
+                                    display: "flex",
+                                    alignItems: "center",
+                                    gap: 6,
+                                  }}
+                                >
+                                  <img
+                                    src={url}
+                                    style={{
+                                      width: 20,
+                                      height: 20,
+                                    }}
+                                  />
+                                  <p>Imagem Estática</p>
+                                </div>
+                              </LayerListItem>
+                            ))}
+                        </LayerList>
+                      </li>
+                    ),
+                  )}
+                </ul>
+              </div>
+            );
           },
         ],
       ]);

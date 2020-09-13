@@ -41,6 +41,9 @@ export default class ApplySelection extends EditorPlugin {
     this.editor?.events.on("ApplySelection", (render: boolean) =>
       this.applySelection(render),
     );
+    this.editor?.events.on("EditorOnSetEditor", ([], render: any = true) =>
+      this.applySelection(render),
+    );
   }
   async onMount() {}
 }

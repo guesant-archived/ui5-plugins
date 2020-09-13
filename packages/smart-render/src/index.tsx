@@ -82,6 +82,25 @@ export default class SmartRender extends EditorPlugin {
     this.editor?.events.on("CanvasSmartRender", (arg0: any) =>
       this.smartRender(arg0),
     );
+    this.editor?.events.on(
+      "EditorOnSetTemplate",
+      (
+        []: [Template, Template],
+        {
+          forceRender = false,
+        }: {
+          forceRender?: boolean;
+        } = {},
+      ) => {
+        switch (forceRender ? "forceRender" : "") {
+          case "forceRender":
+            return this.forceRender();
+          default:
+            break;
+        }
+        return;
+      },
+    );
   }
   async onMount() {}
   async onSetupCanvas() {

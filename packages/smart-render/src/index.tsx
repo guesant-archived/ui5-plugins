@@ -18,9 +18,21 @@
  */
 //endregion
 
+import equal from "deep-equal";
 import { fabric } from "fabric";
 import * as fiCore from "@fantastic-images/core";
 import { EditorPlugin } from "@ui5/shared-lib/lib/editor/EditorPlugin";
+
+const needsFullRender = ([currentTemplate, newTemplate]: [
+  Template,
+  Template,
+]) =>
+  !equal(currentTemplate.model.sketch, newTemplate.model.sketch, {
+    strict: true,
+  }) ||
+  !equal(currentTemplate.model.staticImages, newTemplate.model.staticImages, {
+    strict: true,
+  });
 
 export default class SmartRender extends EditorPlugin {
   async forceRender() {
@@ -32,7 +44,11 @@ export default class SmartRender extends EditorPlugin {
       })(template);
     }
   }
-  async smartRender() {}
+  async smartRender([currTemplate, newTemplate]: [Template, Template]) {
+    if (needsFullRender([currTemplate, newTemplate])) {
+      await this.forceRender();
+    }
+  }
   onRegisterPlugin() {
     return {
       info: {

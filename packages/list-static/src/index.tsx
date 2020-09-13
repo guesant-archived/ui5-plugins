@@ -24,6 +24,15 @@ import { LayerList } from "@ui5/react-user-interface/lib/LayerList";
 import { LayerListItem } from "@ui5/react-user-interface/lib/LayerListItem";
 import { LayerListHeader } from "@ui5/react-user-interface/lib/LayerListHeader";
 import { TemplateStaticImage } from "@fantastic-images/types/src/TemplateStaticImage";
+import * as lib from "@fantastic-images/lib";
+import { readAsBase64 } from "./read-as-base-64";
+import { supportsFileReaderAPI } from "./supportsFileReaderAPI";
+
+const {
+  model: {
+    mutations: { ADD_STATIC_IMAGE },
+  },
+} = lib;
 
 const tabStatic = Symbol("static");
 
@@ -48,15 +57,32 @@ export default class ListStatic extends EditorPlugin {
             const {
               model: { staticImages },
             } = template;
-
+            const loadImage = async (position: "front" | "back") => {
+              if (!supportsFileReaderAPI) return;
+              const input = document.createElement("input");
+              input.type = "file";
+              input.multiple = true;
+              input.addEventListener("change", async () => {
+                this.editor?.onSetTemplate(
+                  ADD_STATIC_IMAGE({
+                    staticImages: (
+                      await Promise.all(
+                        Array.from(input.files || []).map(readAsBase64),
+                      )
+                    ).map((url: string) => ({ url, position })),
+                  })(template),
+                );
+              });
+              input.click();
+            };
             return (
               <div>
                 <ul>
                   {([
-                    ["front", "Ao topo"],
-                    ["back", "Ao fundo"],
-                  ] as ["front" | "back", string][]).map(
-                    ([position, description], idx) => (
+                    ["front", "Ao topo", "Adicionar imagem"],
+                    ["back", "Ao fundo", "Adicionar imagem"],
+                  ] as ["front" | "back", string, string][]).map(
+                    ([position, description, addtext], idx) => (
                       <li key={idx}>
                         <LayerListHeader>{description}</LayerListHeader>
                         <LayerList>
@@ -87,6 +113,19 @@ export default class ListStatic extends EditorPlugin {
                                 </div>
                               </LayerListItem>
                             ))}
+                          <LayerListItem className="no-border">
+                            <button
+                              tabIndex={0}
+                              onClick={() => loadImage(position)}
+                              disabled={!supportsFileReaderAPI}
+                            >
+                              {[
+                                ...(supportsFileReaderAPI
+                                  ? [addtext]
+                                  : ["Please update your browser."]),
+                              ].join(" ")}
+                            </button>
+                          </LayerListItem>
                         </LayerList>
                       </li>
                     ),

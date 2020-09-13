@@ -13,7 +13,7 @@
   },
   "scripts": {
     "start": "tsc -p tsconfig.json --declaration --watch",
-    "build": "npm run clean && tsc -p tsconfig.json --declaration",
+    "build": "tsc -p tsconfig.json --declaration",
     "clean": "rm -rf lib"
   },
   "repository": "https://github.com/guesant/ui5-plugins.git",

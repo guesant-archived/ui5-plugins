@@ -103,7 +103,7 @@ export default class InspectObjectFont extends EditorPlugin {
                 <GridFontFamily>
                   <InputText
                     placeholder="Fonte"
-                    defaultValue={sharedProperty(
+                    value={sharedProperty(
                       ({ fontFamily }) => fontFamily,
                       "",
                     )(selectedObjects)}

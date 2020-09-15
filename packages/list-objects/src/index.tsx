@@ -24,6 +24,8 @@ import { LayerListItem } from "@ui5/react-user-interface/lib/LayerListItem";
 import { EditorPlugin } from "@ui5/shared-lib/lib/editor/EditorPlugin";
 import { smartSelection } from "@ui5/shared-lib/lib/editor/selection/smart-selection";
 import { isSelected } from "@ui5/shared-lib/lib/editor/selection/is-selected";
+import { Actions } from "./components/action-group";
+import { actions } from "./actions";
 
 const tabCamadas = Symbol("camadas");
 
@@ -60,6 +62,15 @@ export default class ListObjects extends EditorPlugin {
             return (
               this.editor && (
                 <div style={{ height: "100%" }}>
+                  <div
+                    style={{
+                      paddingLeft: "6px",
+                      paddingRight: "6px",
+                      marginBottom: "2px",
+                    }}
+                  >
+                    <Actions actions={actions(this)} />
+                  </div>
                   <LayerList
                     style={{ height: "100%" }}
                     onClick={() => updateSelection([])}

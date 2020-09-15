@@ -170,23 +170,17 @@ export default class InspectObjectFont extends EditorPlugin {
                         <React.Fragment>
                           {[
                             [
-                              {
-                                defaultValue: "left",
-                              },
+                              { defaultValue: "left" },
                               ">",
                               { title: "Alinhado à Esquerda" },
                             ],
                             [
-                              {
-                                defaultValue: "center",
-                              },
+                              { defaultValue: "center" },
                               "-",
                               { title: "Centralizado" },
                             ],
                             [
-                              {
-                                defaultValue: "right",
-                              },
+                              { defaultValue: "right" },
                               "<",
                               { title: "Alinhado à Direita" },
                             ],

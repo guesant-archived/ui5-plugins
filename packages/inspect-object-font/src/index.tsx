@@ -211,9 +211,8 @@ export default class InspectObjectFont extends EditorPlugin {
                                       padding: "7px 0px",
                                       fontFamily: "monospace",
                                     }}
-                                  >
-                                    {text}
-                                  </span>
+                                    children={text}
+                                  />
                                 }
                                 {...input}
                               />

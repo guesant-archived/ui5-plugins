@@ -145,9 +145,7 @@ export default class InspectObjectFont extends EditorPlugin {
                           ({ fontSize }) => fontSize,
                           "",
                         )(selectedObjects),
-                      }}
-                      wrapperProps={{
-                        onChangeCapture: ({ target: { value } }: any) => {
+                        onChange: ({ target: { value } }: any) => {
                           updateAll(() => ({ fontSize: parseFloat(value) }));
                         },
                       }}

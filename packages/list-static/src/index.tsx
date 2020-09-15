@@ -52,7 +52,7 @@ export default class ListStatic extends EditorPlugin {
         [
           { ui: { displayText: "Estático" } },
           () => {
-            if (!this.editor) return <React.Fragment />;
+            if (!this.editor) return <div />;
             const { template } = this.editor.state;
             const {
               model: { staticImages },

@@ -40,7 +40,7 @@ export default class InspectObjectPosition extends EditorPlugin {
     await this.editor?.events.emit("SetInspector", {
       verifyCompatibility: () => true,
       component: () => {
-        if (!this.editor) return <React.Fragment />;
+        if (!this.editor) return <div />;
         const { template, editor } = this.editor.state;
 
         const selectedObjects = template.model.fabricExported.objects.filter(

@@ -84,7 +84,7 @@ export default class InspectObjectFont extends EditorPlugin {
       verifyCompatibility: ({ object: { type } }: any) =>
         ["textbox"].includes(type),
       component: () => {
-        if (!this.editor) return <React.Fragment />;
+        if (!this.editor) return <div />;
         const { template, editor } = this.editor.state;
         const selectedObjects = template.model.fabricExported.objects.filter(
           (_, idx) => editor.selectedObjects.includes(idx),

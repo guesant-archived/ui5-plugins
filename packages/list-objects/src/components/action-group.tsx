@@ -43,12 +43,14 @@ export const Actions = ({
     defaultValue="-1"
   >
     <option disabled value="-1" children={defaultText} />
-    {actions.map(([optProps, actionItems], optIdx) => (
-      <optgroup key={`${optIdx}`} {...optProps}>
-        {actionItems.map(([{ ...props }], actionIdx) => (
+    {actions.map(([optProps, actionItems], optIdx) =>
+      React.createElement(optProps.label ? "optgroup" : React.Fragment, {
+        ...optProps,
+        key: optIdx,
+        children: actionItems.map(([{ ...props }], actionIdx) => (
           <option key={`${optIdx}-${actionIdx}`} {...props} />
-        ))}
-      </optgroup>
-    ))}
+        )),
+      }),
+    )}
   </select>
 );

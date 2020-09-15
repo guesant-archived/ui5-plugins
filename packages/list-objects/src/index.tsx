@@ -47,18 +47,15 @@ export default class ListObjects extends EditorPlugin {
           () => {
             if (!this.editor) return <React.Fragment />;
             const { editor, template } = this.editor.state;
-
             const updateSelection = (selectedObjects: number[]) => {
               this.editor?.onSetEditor({
                 ...editor,
                 selectedObjects,
               });
             };
-
             const _smartSelection = smartSelection(updateSelection)(
               editor.selectedObjects,
             );
-
             return (
               this.editor && (
                 <div style={{ height: "100%" }}>

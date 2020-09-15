@@ -61,7 +61,7 @@ export default class InpectObject extends EditorPlugin {
         [
           { ui: { displayText: "Design" } },
           () => {
-            if (!this.editor) return <React.Fragment />;
+            if (!this.editor) return <div />;
             const { template, editor } = this.editor.state;
             const selectedObjects = getSelectedObjects({ template, editor });
             return (

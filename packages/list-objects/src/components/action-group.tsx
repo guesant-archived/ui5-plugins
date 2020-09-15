@@ -30,7 +30,7 @@ export const Actions = ({
   defaultText?: string;
 }) => (
   <select
-    style={{ maxHeight: "100%", height: "100%" }}
+    style={{ maxWidth: "100%" }}
     onChange={(e) => {
       const [, fn] = actions
         .map(([, actionItems]) => actionItems)

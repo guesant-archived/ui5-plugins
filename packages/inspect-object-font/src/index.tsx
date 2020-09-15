@@ -199,6 +199,11 @@ export default class InspectObjectFont extends EditorPlugin {
                                   sharedProperty(({ textAlign }) => textAlign)(
                                     selectedObjects,
                                   ) === (input as any).defaultValue,
+                                onChange: ({ target: { value } }: any) => {
+                                  updateAll(() => ({
+                                    textAlign: value,
+                                  }));
+                                },
                               },
                               ...args,
                             ])

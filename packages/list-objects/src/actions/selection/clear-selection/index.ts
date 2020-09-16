@@ -18,12 +18,19 @@
  */
 //endregion
 
-import { ActionGroup } from "@ui5/react-user-interface/lib/Actions";
-import { withSelected } from "./with-selected";
-import { selection } from "./selection";
-import ListObjects from "..";
+import { ActionItem } from "@ui5/react-user-interface/lib/Actions";
+import { getKey } from "../../../get-key";
+import ListObjects from "../../..";
 
-export const actions = (plugin: ListObjects): ActionGroup[] => [
-  withSelected(plugin),
-  selection(plugin),
+export const clearSelection = (plugin: ListObjects): ActionItem => [
+  {
+    value: getKey(Math.random()),
+    children: "Limpar Seleção",
+  },
+  async () => {
+    if (plugin.editor) {
+      const { editor } = plugin.editor.state;
+      await plugin.editor.onSetEditor({ ...editor, selectedObjects: [] });
+    }
+  },
 ];

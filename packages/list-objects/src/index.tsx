@@ -19,6 +19,7 @@
 //endregion
 
 import * as React from "react";
+import * as lib from "@fantastic-images/lib";
 import { LayerList } from "@ui5/react-user-interface/lib/LayerList";
 import { LayerListItem } from "@ui5/react-user-interface/lib/LayerListItem";
 import { EditorPlugin } from "@ui5/shared-lib/lib/editor/EditorPlugin";
@@ -26,6 +27,12 @@ import { smartSelection } from "@ui5/shared-lib/lib/editor/selection/smart-selec
 import { isSelected } from "@ui5/shared-lib/lib/editor/selection/is-selected";
 import { Actions } from "@ui5/react-user-interface/lib/Actions";
 import { actions } from "./actions";
+
+const {
+  model: {
+    mutations: { REMOVE_OBJECT },
+  },
+} = lib;
 
 const tabCamadas = Symbol("camadas");
 
@@ -91,7 +98,35 @@ export default class ListObjects extends EditorPlugin {
                             _smartSelection(idx)(e);
                           }}
                         >
-                          {obj.type}
+                          <div
+                            style={{
+                              width: "100%",
+                              gridGap: 6,
+                              display: "flex",
+                              alignItems: "center",
+                            }}
+                          >
+                            <span>{obj.type}</span>
+                            <button
+                              style={{ marginLeft: "auto" }}
+                              onClick={async (e) => {
+                                e.stopPropagation();
+                                e.preventDefault();
+                                await this.editor?.onSetTemplate(
+                                  REMOVE_OBJECT({ idx: [idx] })(template),
+                                );
+                                await this.editor?.onSetEditor({
+                                  ...editor,
+                                  selectedObjects: editor.selectedObjects
+                                    .filter((i) => ![idx].includes(i))
+                                    .map((i) =>
+                                      i > idx ? i - [idx].length : i,
+                                    ),
+                                });
+                              }}
+                              children={"x"}
+                            />
+                          </div>
                         </LayerListItem>
                       </React.Fragment>
                     ))}

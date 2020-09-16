@@ -24,7 +24,7 @@ import { LayerListItem } from "@ui5/react-user-interface/lib/LayerListItem";
 import { EditorPlugin } from "@ui5/shared-lib/lib/editor/EditorPlugin";
 import { smartSelection } from "@ui5/shared-lib/lib/editor/selection/smart-selection";
 import { isSelected } from "@ui5/shared-lib/lib/editor/selection/is-selected";
-import { Actions } from "./components/action-group";
+import { Actions } from "@ui5/react-user-interface/lib/Actions";
 import { actions } from "./actions";
 
 const tabCamadas = Symbol("camadas");

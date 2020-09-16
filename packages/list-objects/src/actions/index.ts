@@ -18,7 +18,7 @@
  */
 //endregion
 
+import { ActionGroup } from "@ui5/react-user-interface/lib/Actions";
 import ListObjects from "..";
-import { ActionGroup } from "../types/ActionGroup";
 
 export const actions = (_: ListObjects): ActionGroup[] => []

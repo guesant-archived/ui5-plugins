@@ -18,6 +18,7 @@
   "author": "Gabriel Rodrigues <jipacoding@gmail.com>",
   "license": "GPL-3.0",
   "dependencies": {
+    "@fantastic-images/lib": "link:../../../fantastic-images/packages/lib",
     "@ui5/react-user-interface": "link:../../../ui5-monorepo/packages/react-user-interface",
     "@ui5/shared-lib": "link:../../../ui5-monorepo/packages/shared-lib"
   },

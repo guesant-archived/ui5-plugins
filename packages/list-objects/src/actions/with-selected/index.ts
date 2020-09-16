@@ -19,9 +19,10 @@
 //endregion
 
 import { ActionGroup } from "@ui5/react-user-interface/lib/Actions";
-import { withSelected } from "./with-selected";
-import ListObjects from "..";
+import { removeSelected } from "./remove-selected";
+import ListObjects from "../..";
 
-export const actions = (plugin: ListObjects): ActionGroup[] => [
-  withSelected(plugin),
+export const withSelected = (plugin: ListObjects): ActionGroup => [
+  {},
+  [removeSelected(plugin)],
 ];

@@ -58,7 +58,13 @@ export default class ListObjects extends EditorPlugin {
             );
             return (
               this.editor && (
-                <div style={{ height: "100%" }}>
+                <div
+                  style={{
+                    height: "100%",
+                    display: "flex",
+                    flexDirection: "column",
+                  }}
+                >
                   <div
                     style={{
                       paddingLeft: "6px",
@@ -69,7 +75,7 @@ export default class ListObjects extends EditorPlugin {
                     <Actions actions={actions(this)} />
                   </div>
                   <LayerList
-                    style={{ height: "100%" }}
+                    style={{ flex: 1 }}
                     onClick={() => updateSelection([])}
                   >
                     {template.model.fabricExported.objects.map((obj, idx) => (

@@ -18,12 +18,16 @@
  */
 //endregion
 
-import { ActionGroup } from "@ui5/react-user-interface/lib/Actions";
-import { clearSelection } from "./clear-selection";
-import { applySelection } from "./apply-selection";
-import ListObjects from "../../";
+import { ActionItem } from "@ui5/react-user-interface/lib/Actions";
+import ListObjects from "../../../index";
+import { getKey } from "../../../get-key";
 
-export const selection = (plugin: ListObjects): ActionGroup => [
-  { label: "Seleção" },
-  [applySelection(plugin), clearSelection(plugin)],
+export const applySelection = (plugin: ListObjects): ActionItem => [
+  {
+    value: getKey(Math.random()),
+    children: "Aplicar Seleção",
+  },
+  async () => {
+    await plugin.editor?.events.emit("ApplySelection");
+  },
 ];

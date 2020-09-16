@@ -52,7 +52,7 @@ export default class ListObjects extends EditorPlugin {
         [
           { ui: { displayText: "Camadas" } },
           () => {
-            if (!this.editor) return <React.Fragment />;
+            if (!this.editor) return <div />;
             const { editor, template } = this.editor.state;
             const updateSelection = (selectedObjects: number[]) => {
               this.editor?.onSetEditor({

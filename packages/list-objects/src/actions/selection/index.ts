@@ -25,5 +25,5 @@ import ListObjects from "../../";
 
 export const selection = (plugin: ListObjects): ActionGroup => [
   { label: "Seleção" },
-  [applySelection(plugin), clearSelection(plugin)],
+  [clearSelection(plugin), applySelection(plugin)],
 ];

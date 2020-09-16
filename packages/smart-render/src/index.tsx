@@ -32,6 +32,13 @@ const needsFullRender = ([currentTemplate, newTemplate]: [
   Template,
   Template,
 ]) =>
+  !equal(
+    currentTemplate.model.fabricExported.objects.length,
+    newTemplate.model.fabricExported.objects.length,
+    {
+      strict: true,
+    },
+  ) ||
   !equal(currentTemplate.model.sketch, newTemplate.model.sketch, {
     strict: true,
   }) ||

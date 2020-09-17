@@ -18,8 +18,7 @@
  */
 //endregion
 
-import { ActionGroup } from "@ui5/react-user-interface/lib/Actions";
-import { file } from "./file";
-import EditorHeader from "..";
-
-export const actions = (plugin: EditorHeader): ActionGroup[] => [file(plugin)];
+export const supportsFileReaderAPI = (() =>
+  Boolean(
+    window.FileReader && window.File && window.FileList && window.Blob,
+  ))();

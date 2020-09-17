@@ -19,6 +19,7 @@
 //endregion
 
 import { ActionItem } from "@ui5/react-user-interface/lib/Actions";
+import { Template } from "@fantastic-images/types";
 import { getKey } from "../../../get-key";
 import EditorHeader from "../../..";
 
@@ -30,11 +31,36 @@ const download = (path: string, filename: string) => {
   a.click();
 };
 
+const readAsBase64 = (blob: Blob): Promise<string> =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.addEventListener("load", () => resolve(reader.result as string));
+    reader.addEventListener("error", reject);
+    reader.readAsDataURL(blob);
+  });
+
 export const downloadTemplate = (plugin: EditorHeader): ActionItem => [
   { value: getKey(Math.random()), children: "Exportar Template" },
   async () => {
     if (plugin.editor) {
       const { template } = plugin.editor.state;
+      const optimizedTemplate: Template = {
+        ...template,
+        model: {
+          ...template.model,
+          staticImages: await Promise.all(
+            template.model.staticImages.map(async (staticImage) => ({
+              ...staticImage,
+              url:
+                new URL(staticImage.url).protocol === "blob:"
+                  ? await fetch(staticImage.url)
+                      .then((res) => res.blob())
+                      .then((blob) => readAsBase64(blob))
+                  : staticImage.url,
+            })),
+          ),
+        },
+      };
       const destfile = "template.json";
       const outputJSON = JSON.stringify(optimizedTemplate);
       const output = window.Blob

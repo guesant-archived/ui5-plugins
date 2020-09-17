@@ -18,6 +18,7 @@
  */
 //endregion
 
+import * as React from "react";
 import { EditorPlugin } from "@ui5/shared-lib/lib/editor/EditorPlugin";
 
 export default class EditorHeader extends EditorPlugin {
@@ -29,5 +30,22 @@ export default class EditorHeader extends EditorPlugin {
     };
   }
   onSetup() {}
-  async onMount() {}
+  async onMount() {
+    await this.editor?.events.emit("SetEditorComponent", [
+      "header",
+      () => {
+        return (
+          <div
+            style={{
+              paddingTop: 8,
+              paddingLeft: 8,
+              paddingRight: 8,
+              paddingBottom: 8,
+              backgroundColor: "#6B6B6B",
+            }}
+          />
+        );
+      },
+    ]);
+  }
 }

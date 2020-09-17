@@ -20,6 +20,8 @@
 
 import * as React from "react";
 import { EditorPlugin } from "@ui5/shared-lib/lib/editor/EditorPlugin";
+import { Actions } from "@ui5/react-user-interface/lib/Actions";
+import { actions } from "./actions";
 
 export default class EditorHeader extends EditorPlugin {
   onRegisterPlugin() {
@@ -43,6 +45,14 @@ export default class EditorHeader extends EditorPlugin {
               paddingBottom: 8,
               backgroundColor: "#6B6B6B",
             }}
+            children={
+              <div>
+                <Actions
+                  actions={actions(this)}
+                  defaultText="Selecione uma Opção"
+                />
+              </div>
+            }
           />
         );
       },

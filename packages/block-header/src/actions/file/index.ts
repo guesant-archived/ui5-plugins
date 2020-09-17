@@ -19,7 +19,10 @@
 //endregion
 
 import { ActionGroup } from "@ui5/react-user-interface/lib/Actions";
-import { file } from "./file";
-import EditorHeader from "..";
+import { openTemplate } from "./open-template";
+import EditorHeader from "../..";
 
-export const actions = (plugin: EditorHeader): ActionGroup[] => [file(plugin)];
+export const file = (plugin: EditorHeader): ActionGroup => [
+  { label: "Arquivo" },
+  [openTemplate(plugin)],
+];

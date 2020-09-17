@@ -53,16 +53,56 @@ export const openTemplate = (plugin: EditorHeader): ActionItem => [
     input.addEventListener("change", async () => {
       const [file] = Array.from(input.files || []);
       if (file) {
-        await parseJSON(await readAsText(file)).then(
-          async (template: Template) => {
+        await parseJSON(await readAsText(file))
+          .then(async (template: Template) =>
+            confirm(
+              "Deseja otimizar sua experiência no Editor adicionando as imagens estáticas ao cache?",
+            )
+              ? ({
+                  ...template,
+                  model: {
+                    ...template.model,
+                    staticImages: await Promise.all(
+                      template.model.staticImages.map(async (staticImage) => ({
+                        ...staticImage,
+                        url: (await new Promise((resolve) => {
+                          resolve(
+                            confirm(
+                              `Adicionar ${
+                                staticImage.url.length > 42
+                                  ? [
+                                      staticImage.url.slice(0, 24),
+                                      staticImage.url.slice(-15),
+                                    ].join("...")
+                                  : staticImage.url
+                              } ao cache?`,
+                            ),
+                          );
+                        }))
+                          ? await fetch(staticImage.url)
+                              .then((res) => res.blob())
+                              .then((blob) => URL.createObjectURL(blob))
+                              .catch(() => staticImage.url)
+                          : staticImage.url,
+                      })),
+                    ),
+                  },
+                } as Template)
+              : template,
+          )
+          .then(async (template: Template) => {
+            plugin.editor?.state.template.model.staticImages.forEach(
+              ({ url }) => {
+                URL.revokeObjectURL(url);
+              },
+            );
             await plugin.editor?.onSetTemplate(template);
             await plugin.editor?.onSetEditor({
               ...plugin.editor.state.editor,
               selectedObjects: [],
               selectedStaticImages: [],
             });
-          },
-        );
+          });
       }
     });
     input.click();

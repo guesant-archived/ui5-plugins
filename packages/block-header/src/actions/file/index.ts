@@ -20,9 +20,10 @@
 
 import { ActionGroup } from "@ui5/react-user-interface/lib/Actions";
 import { openTemplate } from "./open-template";
+import { downloadTemplate } from "./download-template";
 import EditorHeader from "../..";
 
 export const file = (plugin: EditorHeader): ActionGroup => [
   { label: "Arquivo" },
-  [openTemplate(plugin)],
+  [openTemplate(plugin), downloadTemplate(plugin)],
 ];

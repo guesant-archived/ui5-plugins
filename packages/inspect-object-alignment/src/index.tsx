@@ -19,6 +19,7 @@
 //endregion
 
 import { EditorPlugin } from "@ui5/shared-lib/lib/editor/EditorPlugin";
+import * as React from "react";
 
 export default class InspectObjectAlignment extends EditorPlugin {
   onRegisterPlugin() {
@@ -29,5 +30,12 @@ export default class InspectObjectAlignment extends EditorPlugin {
     };
   }
   onSetup() {}
-  async onMount() {}
+  async onMount() {
+    await this.editor?.events.emit("SetInspector", {
+      verifyCompatibility: () => true,
+      component: () => {
+        return <div />;
+      },
+    });
+  }
 }

@@ -20,6 +20,12 @@
 
 import * as React from "react";
 
+export const GridButton = ({
+  ...props
+}: React.ButtonHTMLAttributes<HTMLButtonElement>) => (
+  <button {...props} style={{ overflow: "hidden", ...props.style }} />
+);
+
 export const Grid = ({ ...props }: React.HTMLAttributes<HTMLDivElement>) => (
   <div
     {...props}

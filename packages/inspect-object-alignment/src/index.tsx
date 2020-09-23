@@ -21,6 +21,7 @@
 import { EditorPlugin } from "@ui5/shared-lib/lib/editor/EditorPlugin";
 import * as React from "react";
 import { align } from "./modes/align";
+import { distribute } from "./modes/distribute";
 
 export default class InspectObjectAlignment extends EditorPlugin {
   onRegisterPlugin() {
@@ -36,6 +37,7 @@ export default class InspectObjectAlignment extends EditorPlugin {
       verifyCompatibility: () => true,
       component: () => {
         const Align = align(this);
+        const Distribute = distribute(this);
         return (
           <div
             children={
@@ -47,7 +49,10 @@ export default class InspectObjectAlignment extends EditorPlugin {
                   flexDirection: "column",
                   gap: 4,
                 }}
-                children={[() => React.createElement(Align)].map((i, idx) =>
+                children={[
+                  () => React.createElement(Align),
+                  () => React.createElement(Distribute),
+                ].map((i, idx) =>
                   React.createElement(
                     React.Fragment,
                     { key: idx },

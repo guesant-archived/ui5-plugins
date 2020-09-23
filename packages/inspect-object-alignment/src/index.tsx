@@ -34,7 +34,28 @@ export default class InspectObjectAlignment extends EditorPlugin {
     await this.editor?.events.emit("SetInspector", {
       verifyCompatibility: () => true,
       component: () => {
-        return <div />;
+        return (
+          <div
+            children={
+              <div
+                style={{
+                  paddingTop: 6,
+                  paddingBottom: 6,
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: 4,
+                }}
+                children={[].map((i, idx) =>
+                  React.createElement(
+                    React.Fragment,
+                    { key: idx },
+                    React.createElement(i),
+                  ),
+                )}
+              />
+            }
+          />
+        );
       },
     });
   }

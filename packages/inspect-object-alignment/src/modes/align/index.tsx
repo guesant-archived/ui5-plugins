@@ -21,10 +21,13 @@
 import * as React from "react";
 import InspectObjectAlignment from "../..";
 import { Grid, GridButton } from "../../components/grid";
+import { alignHorizonalLeft } from "./align-horizontal-left";
 
 export const align = (plugin: InspectObjectAlignment) => () => {
   if (!plugin.editor) return <div />;
-  const modifiers: React.ButtonHTMLAttributes<HTMLButtonElement>[] = [];
+  const modifiers: React.ButtonHTMLAttributes<HTMLButtonElement>[] = [
+    alignHorizonalLeft(plugin),
+  ];
   return (
     <Grid
       children={

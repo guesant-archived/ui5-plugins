@@ -24,6 +24,7 @@ import { Grid, GridButton } from "../../components/grid";
 import { alignHorizontalCenter } from "./align-horizontal-center";
 import { alignHorizonalLeft } from "./align-horizontal-left";
 import { alignHorizontalRight } from "./align-horizontal-right";
+import { alignVerticalCenter } from "./align-vertical-center";
 import { alignVerticalTop } from "./align-vertical-top";
 
 export const align = (plugin: InspectObjectAlignment) => () => {
@@ -33,6 +34,7 @@ export const align = (plugin: InspectObjectAlignment) => () => {
     alignHorizontalCenter(plugin),
     alignHorizontalRight(plugin),
     alignVerticalTop(plugin),
+    alignVerticalCenter(plugin),
   ];
   return (
     <Grid

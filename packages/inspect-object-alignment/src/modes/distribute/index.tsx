@@ -24,6 +24,7 @@ import { Grid, GridButton } from "../../components/grid";
 import { distributeHorizontalCenter } from "./distribute-horizontal-center";
 import { distributeHorizonalLeft } from "./distribute-horizontal-left";
 import { distributeHorizontalRight } from "./distribute-horizontal-right";
+import { distributeVerticalCenter } from "./distribute-vertical-center";
 import { distributeVerticalTop } from "./distribute-vertical-top";
 
 export const distribute = (plugin: InspectObjectAlignment) => () => {
@@ -33,6 +34,7 @@ export const distribute = (plugin: InspectObjectAlignment) => () => {
     distributeHorizontalCenter(plugin),
     distributeHorizontalRight(plugin),
     distributeVerticalTop(plugin),
+    distributeVerticalCenter(plugin),
   ];
   return (
     <Grid

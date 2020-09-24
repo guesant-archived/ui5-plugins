@@ -18,29 +18,19 @@
  */
 //endregion
 
-import * as React from "react";
+import { updator } from "@ui5/shared-lib/lib/template/updator";
 import InspectObjectAlignment from "../..";
-import { Grid, GridButton } from "../../components/grid";
-import { distributeHorizonalLeft } from "./distribute-horizontal-left";
+import { generateHorizontalLeft } from "../../helpers/generate-horizontal-left";
 
-export const distribute = (plugin: InspectObjectAlignment) => () => {
-  if (!plugin.editor) return <div />;
-  const modifiers: React.ButtonHTMLAttributes<HTMLButtonElement>[] = [
-    distributeHorizonalLeft(plugin),
-  ];
-  return (
-    <Grid
-      children={
-        <React.Fragment>
-          {modifiers.map(({ ...props }, idx) =>
-            React.createElement(
-              React.Fragment,
-              { key: idx },
-              React.createElement(GridButton, { ...props }),
-            ),
-          )}
-        </React.Fragment>
-      }
-    />
-  );
+export const distributeHorizonalLeft = (
+  plugin: InspectObjectAlignment,
+): React.ButtonHTMLAttributes<HTMLButtonElement> => {
+  if (!plugin.editor) return {};
+  const update = updator(plugin);
+  return {
+    children: "hl",
+    onClick: async () => {
+      await update(generateHorizontalLeft(0));
+    },
+  };
 };

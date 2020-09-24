@@ -20,6 +20,7 @@
 
 import { updator } from "@ui5/shared-lib/lib/template/updator";
 import InspectObjectAlignment from "../..";
+import { alignAsGroupFromEvent } from "../../helpers/as-group-from-event";
 import { generateHorizontalLeft } from "../../helpers/generate-horizontal-left";
 
 export const distributeHorizonalLeft = (
@@ -29,8 +30,8 @@ export const distributeHorizonalLeft = (
   const update = updator(plugin);
   return {
     children: "hl",
-    onClick: async () => {
-      await update(generateHorizontalLeft(0));
+    onClick: async (e) => {
+      await update(generateHorizontalLeft(0, alignAsGroupFromEvent(plugin)(e)));
     },
   };
 };

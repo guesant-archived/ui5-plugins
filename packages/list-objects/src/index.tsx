@@ -18,21 +18,15 @@
  */
 //endregion
 
-import * as React from "react";
-import * as lib from "@fantastic-images/lib";
+import REMOVE_OBJECT from "@fantastic-images/lib/dist/model/mutations/remove-object";
+import { Actions } from "@ui5/react-user-interface/lib/Actions";
 import { LayerList } from "@ui5/react-user-interface/lib/LayerList";
 import { LayerListItem } from "@ui5/react-user-interface/lib/LayerListItem";
 import { EditorPlugin } from "@ui5/shared-lib/lib/editor/EditorPlugin";
-import { smartSelection } from "@ui5/shared-lib/lib/editor/selection/smart-selection";
 import { isSelected } from "@ui5/shared-lib/lib/editor/selection/is-selected";
-import { Actions } from "@ui5/react-user-interface/lib/Actions";
+import { smartSelection } from "@ui5/shared-lib/lib/editor/selection/smart-selection";
+import * as React from "react";
 import { actions } from "./actions";
-
-const {
-  model: {
-    mutations: { REMOVE_OBJECT },
-  },
-} = lib;
 
 const tabCamadas = Symbol("camadas");
 

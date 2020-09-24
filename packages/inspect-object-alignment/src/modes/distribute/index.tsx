@@ -21,12 +21,18 @@
 import * as React from "react";
 import InspectObjectAlignment from "../..";
 import { Grid, GridButton } from "../../components/grid";
+import { distributeHorizontalCenter } from "./distribute-horizontal-center";
 import { distributeHorizonalLeft } from "./distribute-horizontal-left";
+import { distributeHorizontalRight } from "./distribute-horizontal-right";
+import { distributeVerticalTop } from "./distribute-vertical-top";
 
 export const distribute = (plugin: InspectObjectAlignment) => () => {
   if (!plugin.editor) return <div />;
   const modifiers: React.ButtonHTMLAttributes<HTMLButtonElement>[] = [
     distributeHorizonalLeft(plugin),
+    distributeHorizontalCenter(plugin),
+    distributeHorizontalRight(plugin),
+    distributeVerticalTop(plugin),
   ];
   return (
     <Grid

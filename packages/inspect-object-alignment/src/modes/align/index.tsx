@@ -42,11 +42,11 @@ export const align = (plugin: InspectObjectAlignment) => () => {
     <Grid
       children={
         <React.Fragment>
-          {modifiers.map((modf, idx) =>
+          {modifiers.map(({ ...props }, idx) =>
             React.createElement(
               React.Fragment,
               { key: idx },
-              React.createElement(GridButton, { ...modf }),
+              React.createElement(GridButton, { ...props }),
             ),
           )}
         </React.Fragment>

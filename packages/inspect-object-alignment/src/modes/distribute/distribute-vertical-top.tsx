@@ -20,6 +20,7 @@
 
 import { updator } from "@ui5/shared-lib/lib/template/updator";
 import InspectObjectAlignment from "../..";
+import { alignAsGroupFromEvent } from "../../helpers/as-group-from-event";
 import { generateVerticalTop } from "../../helpers/generate-vertical-top";
 
 export const distributeVerticalTop = (
@@ -29,8 +30,8 @@ export const distributeVerticalTop = (
   const update = updator(plugin);
   return {
     children: "vt",
-    onClick: async () => {
-      await update(generateVerticalTop(0));
+    onClick: async (e) => {
+      await update(generateVerticalTop(0, alignAsGroupFromEvent(plugin)(e)));
     },
   };
 };

@@ -18,7 +18,7 @@
  */
 //endregion
 
-import REMOVE_OBJECT from "@fantastic-images/lib/dist/model/mutations/remove-object";
+import { REMOVE_OBJECT } from "@fantastic-images/lib/dist/model/mutations/remove-object";
 import { Actions } from "@ui5/react-user-interface/lib/Actions";
 import { LayerList } from "@ui5/react-user-interface/lib/LayerList";
 import { LayerListItem } from "@ui5/react-user-interface/lib/LayerListItem";

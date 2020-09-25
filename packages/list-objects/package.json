@@ -2,6 +2,7 @@
   "name": "ui5-plugin-list-objects",
   "module": "lib/index.js",
   "devDependencies": {
+    "@types/fabric": "^3.6.8",
     "@types/react": "^16.9.49",
     "@types/react-dom": "^16.9.8",
     "tslib": "^2.0.1",
@@ -23,6 +24,7 @@
     "@ui5/shared-lib": "link:../../../ui5-monorepo/packages/shared-lib"
   },
   "peerDependencies": {
+    "fabric": "^4.1.0",
     "react": ">=16"
   },
   "files": [

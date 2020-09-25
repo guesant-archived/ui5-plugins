@@ -19,11 +19,9 @@
 //endregion
 
 import { ActionGroup } from "@ui5/react-user-interface/lib/Actions";
-import ListObjects from "..";
-import { newObject } from "./new-object";
-import { selection } from "./selection";
+import ListObjects from "../../";
 
-export const actions = (plugin: ListObjects): ActionGroup[] => [
-  selection(plugin),
-  newObject(plugin),
+export const newObject = (_: ListObjects): ActionGroup => [
+  { label: "Novo Objeto" },
+  [],
 ];

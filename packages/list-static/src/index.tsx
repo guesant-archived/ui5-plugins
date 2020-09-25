@@ -18,10 +18,8 @@
  */
 //endregion
 
-import {
-  ADD_STATIC_IMAGE,
-  REMOVE_STATIC_IMAGE,
-} from "@fantastic-images/lib/dist/model/mutations";
+import { ADD_STATIC_IMAGE } from "@fantastic-images/lib/dist/model/mutations/add-static-image";
+import { REMOVE_STATIC_IMAGE } from "@fantastic-images/lib/dist/model/mutations/remove-static-image";
 import { TemplateStaticImage } from "@fantastic-images/types/src/TemplateStaticImage";
 import { LayerList } from "@ui5/react-user-interface/lib/LayerList";
 import { LayerListHeader } from "@ui5/react-user-interface/lib/LayerListHeader";

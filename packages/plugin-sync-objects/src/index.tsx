@@ -18,7 +18,7 @@
  */
 //endregion
 
-import UPDATE_OBJECT from "@fantastic-images/lib/dist/model/mutations/update-object";
+import { UPDATE_OBJECT } from "@fantastic-images/lib/dist/model/mutations/update-object";
 import { findIndexByObject } from "@ui5/shared-lib/lib/canvas/find-index-by-object";
 import { EditorPlugin } from "@ui5/shared-lib/lib/editor/EditorPlugin";
 import { fabric } from "fabric";

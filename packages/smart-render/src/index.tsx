@@ -18,7 +18,7 @@
  */
 //endregion
 
-import renderTemplate from "@fantastic-images/core/dist/fabric/render/render-template";
+import { renderTemplate } from "@fantastic-images/core/dist/fabric/render/render-template";
 import { Template } from "@fantastic-images/types/src/Template";
 import { EditorPlugin } from "@ui5/shared-lib/lib/editor/EditorPlugin";
 import equal from "deep-equal";

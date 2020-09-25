@@ -20,8 +20,9 @@
 
 import { ActionGroup } from "@ui5/react-user-interface/lib/Actions";
 import ListObjects from "../../";
+import { addImage } from "./image";
 
-export const newObject = (_: ListObjects): ActionGroup => [
+export const newObject = (plugin: ListObjects): ActionGroup => [
   { label: "Novo Objeto" },
-  [],
+  [addImage(plugin)],
 ];

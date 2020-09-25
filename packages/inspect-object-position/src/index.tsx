@@ -97,6 +97,7 @@ export default class InspectObjectPosition extends EditorPlugin {
             />
           );
         };
+        const [showScale, setShowScale] = React.useState(false);
         return (
           <div
             style={{
@@ -109,10 +110,25 @@ export default class InspectObjectPosition extends EditorPlugin {
             {[
               [["left", "x"], genericInput],
               [["top", "y"], genericInput],
-              [["width", "w", "scaleX"], sizeInput],
-              [["height", "h", "scaleY"], sizeInput],
+              ...(!showScale
+                ? [
+                    [["width", "w", "scaleX"], sizeInput],
+                    [["height", "h", "scaleY"], sizeInput],
+                  ]
+                : [
+                    [["width", "w"], genericInput],
+                    [["height", "h"], genericInput],
+                    [["scaleX", "sX"], genericInput],
+                    [["scaleY", "sY"], genericInput],
+                  ]),
               [["angle", "a"], genericInput],
             ].map(([args, handler]: any, idx) => handler(args, idx))}
+            <button
+              children={"avançado"}
+              onClick={() => {
+                setShowScale(!showScale);
+              }}
+            />
           </div>
         );
       },

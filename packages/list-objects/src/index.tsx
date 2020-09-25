@@ -72,59 +72,75 @@ export default class ListObjects extends EditorPlugin {
                       paddingRight: "6px",
                       marginBottom: "2px",
                     }}
-                  >
-                    <Actions actions={actions(this)} />
-                  </div>
+                    children={<Actions actions={actions(this)} />}
+                  />
                   <LayerList
                     style={{ flex: 1 }}
                     onClick={() => updateSelection([])}
                   >
                     {template.model.fabricExported.objects.map((obj, idx) => (
-                      <React.Fragment key={idx}>
-                        <LayerListItem
-                          className={
-                            isSelected(editor.selectedObjects)(idx)
-                              ? "active"
-                              : ""
-                          }
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            _smartSelection(idx)(e);
-                          }}
-                        >
-                          <div
-                            style={{
-                              width: "100%",
-                              gridGap: 6,
-                              display: "flex",
-                              alignItems: "center",
+                      <React.Fragment
+                        key={idx}
+                        children={
+                          <LayerListItem
+                            className={
+                              isSelected(editor.selectedObjects)(idx)
+                                ? "active"
+                                : ""
+                            }
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              _smartSelection(idx)(e);
                             }}
-                          >
-                            <span>{obj.type}</span>
-                            <button
-                              style={{ marginLeft: "auto" }}
-                              onClick={async (e) => {
-                                e.stopPropagation();
-                                e.preventDefault();
-                                await this.editor?.onSetTemplate(
-                                  REMOVE_OBJECT({ idx: [idx] })(template),
-                                );
-                                await this.editor?.onSetEditor({
-                                  ...editor,
-                                  selectedObjects: editor.selectedObjects
-                                    .filter((i) => ![idx].includes(i))
-                                    .map((i) =>
-                                      i > idx ? i - [idx].length : i,
-                                    ),
-                                });
-                              }}
-                              children={"x"}
-                            />
-                          </div>
-                        </LayerListItem>
-                      </React.Fragment>
+                            children={
+                              <div
+                                style={{
+                                  width: "100%",
+                                  gridGap: 6,
+                                  display: "flex",
+                                  alignItems: "center",
+                                }}
+                                children={
+                                  <>
+                                    <span>{obj.type}</span>
+                                    <button
+                                      style={{ marginLeft: "auto" }}
+                                      onClick={async (e) => {
+                                        e.stopPropagation();
+                                        e.preventDefault();
+                                        await this.editor?.onSetTemplate(
+                                          REMOVE_OBJECT({ idx: [idx] })(
+                                            template,
+                                          ),
+                                        );
+                                        await this.editor?.onSetEditor({
+                                          ...editor,
+                                          selectedObjects: editor.selectedObjects
+                                            .filter((i) => ![idx].includes(i))
+                                            .map((i) =>
+                                              i > idx ? i - [idx].length : i,
+                                            ),
+                                        });
+                                      }}
+                                      children={"x"}
+                                    />
+                                  </>
+                                }
+                              />
+                            }
+                          />
+                        }
+                      />
                     ))}
                   </LayerList>
+                  <div
+                    style={{
+                      paddingLeft: "6px",
+                      paddingRight: "6px",
+                      marginBottom: "2px",
+                    }}
+                    children={<Actions actions={actions(this)} />}
+                  />
                 </div>
               )
             );

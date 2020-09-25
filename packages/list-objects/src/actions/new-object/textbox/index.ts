@@ -18,12 +18,28 @@
  */
 //endregion
 
-import { ActionGroup } from "@ui5/react-user-interface/lib/Actions";
-import ListObjects from "../../";
-import { addImage } from "./image";
-import { addTextBox } from "./textbox";
+import { ADD_OBJECT } from "@fantastic-images/lib/dist/model/mutations/add-object";
+import { ActionItem } from "@ui5/react-user-interface/lib/Actions";
+import { fabric } from "fabric";
+import { getKey } from "../../../get-key";
+import ListObjects from "../../../index";
 
-export const newObject = (plugin: ListObjects): ActionGroup => [
-  { label: "Novo Objeto" },
-  [addImage(plugin), addTextBox(plugin)],
+export const addTextBox = (plugin: ListObjects): ActionItem => [
+  {
+    value: getKey(Math.random()),
+    children: "TextBox",
+  },
+  async () => {
+    if (plugin.editor) {
+      const { template } = plugin.editor.state;
+      await plugin.editor.onSetTemplate(
+        ADD_OBJECT({
+          object: new fabric.Textbox("TextBox", {
+            left: 10,
+            top: 10,
+          }).toObject(),
+        })(template),
+      );
+    }
+  },
 ];

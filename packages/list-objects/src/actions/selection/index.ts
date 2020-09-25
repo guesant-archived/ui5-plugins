@@ -19,11 +19,12 @@
 //endregion
 
 import { ActionGroup } from "@ui5/react-user-interface/lib/Actions";
+import { removeSelected } from "./remove-selected";
 import { clearSelection } from "./clear-selection";
 import { applySelection } from "./apply-selection";
 import ListObjects from "../../";
 
 export const selection = (plugin: ListObjects): ActionGroup => [
   { label: "Seleção" },
-  [clearSelection(plugin), applySelection(plugin)],
+  [clearSelection(plugin), applySelection(plugin), removeSelected(plugin)],
 ];

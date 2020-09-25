@@ -93,7 +93,7 @@ export default class ListStatic extends EditorPlugin {
                             )
                             .filter(([i]) => i.position === position)
                             .map(([{ url }, idx]) => (
-                              <LayerListItem tabIndex={0} key={idx}>
+                              <LayerListItem key={idx}>
                                 <div
                                   style={{
                                     width: "100%",

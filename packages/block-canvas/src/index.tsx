@@ -21,6 +21,7 @@
 import { EditorPlugin } from "@ui5/shared-lib/lib/editor/EditorPlugin";
 
 export default class EditorCanvas extends EditorPlugin {
+  canvasRef?: React.RefObject<HTMLDivElement>;
   onRegisterPlugin() {
     return {
       info: {
@@ -29,5 +30,17 @@ export default class EditorCanvas extends EditorPlugin {
     };
   }
   onSetup() {}
-  async onMount() {}
+  async onMount() {
+    await this.editor?.events.emit("SetEditorComponent", [
+      "canvas",
+      () => {
+        this.canvasRef = React.useRef<HTMLDivElement>(null);
+        return (
+          <div style={{ backgroundColor: "#e6e6e6" }}>
+            <div ref={this.canvasRef} />
+          </div>
+        );
+      },
+    ]);
+  }
 }

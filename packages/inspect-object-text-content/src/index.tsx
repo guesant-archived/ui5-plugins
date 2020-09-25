@@ -19,6 +19,12 @@
 //endregion
 
 import { EditorPlugin } from "@ui5/shared-lib/lib/editor/EditorPlugin";
+import { sharedProperty } from "@ui5/shared-lib/lib/shared-property";
+import {
+  fnFunction,
+  updateSelectedItems,
+} from "@ui5/shared-lib/lib/template/update-selected-items";
+import * as React from "react";
 
 export default class InspectObjectTextContent extends EditorPlugin {
   onRegisterPlugin() {
@@ -29,5 +35,44 @@ export default class InspectObjectTextContent extends EditorPlugin {
     };
   }
   onSetup() {}
-  async onMount() {}
+  async onMount() {
+    await this.editor?.events.emit("SetInspector", {
+      verifyCompatibility: ({ object: { type } }: any) =>
+        ["textbox"].includes(type),
+      component: () => {
+        if (!this.editor) return <div />;
+        const { template, editor } = this.editor.state;
+        const selectedObjects = template.model.fabricExported.objects.filter(
+          (_, idx) => editor.selectedObjects.includes(idx),
+        );
+        const updateAll = (fn: fnFunction) => {
+          this.editor?.onSetTemplate(
+            updateSelectedItems({ selectedItems: editor.selectedObjects })({
+              template,
+            })(fn),
+          );
+        };
+        return (
+          <div
+            style={{ padding: "6px" }}
+            children={
+              <>
+                <textarea
+                  rows={2}
+                  style={{ width: "100%", resize: "none" }}
+                  value={sharedProperty(
+                    ({ text }) => text,
+                    "",
+                  )(selectedObjects)}
+                  onChange={({ target: { value } }) => {
+                    updateAll(() => ({ text: value }));
+                  }}
+                />
+              </>
+            }
+          />
+        );
+      },
+    });
+  }
 }

@@ -18,7 +18,13 @@
  */
 //endregion
 
+import canvasByDOM from "@fantastic-images/core/dist/fabric/get-canvas/canvas-by-dom";
 import { EditorPlugin } from "@ui5/shared-lib/lib/editor/EditorPlugin";
+import { fabric } from "fabric";
+import * as React from "react";
+
+const randomID = () =>
+  ["canvas", Math.random().toString().replace(".", "")].join("-");
 
 export default class EditorCanvas extends EditorPlugin {
   canvasRef?: React.RefObject<HTMLDivElement>;
@@ -30,6 +36,24 @@ export default class EditorCanvas extends EditorPlugin {
     };
   }
   onSetup() {}
+  async setupCanvas() {
+    if (this.editor && this.canvasRef?.current) {
+      const { template } = this.editor.state;
+      const { current: wrapper } = this.canvasRef;
+      const canvas = canvasByDOM({ fabric })({ document: window.document })({
+        wrapper,
+        id: randomID(),
+      })(template);
+      await new Promise((resolve) =>
+        this.editor?.setState({ canvas }, resolve),
+      );
+      for (const plugin of this.editor.plugins) {
+        plugin.setCanvas(canvas);
+        await plugin.onSetupCanvas();
+      }
+      await this.editor.events.emit("EditorOnSetupCanvas", canvas);
+    }
+  }
   async onMount() {
     await this.editor?.events.emit("SetEditorComponent", [
       "canvas",
@@ -38,9 +62,22 @@ export default class EditorCanvas extends EditorPlugin {
         return (
           <div style={{ backgroundColor: "#e6e6e6" }}>
             <div ref={this.canvasRef} />
+            <pre
+              children={JSON.stringify(
+                {
+                  state: {
+                    editor: this.editor?.state.editor,
+                    template: "#template",
+                  },
+                },
+                null,
+                2,
+              )}
+            />
           </div>
         );
       },
     ]);
+    await this.setupCanvas();
   }
 }

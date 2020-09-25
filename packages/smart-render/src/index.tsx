@@ -18,11 +18,11 @@
  */
 //endregion
 
-import equal from "deep-equal";
-import { fabric } from "fabric";
-import * as fiCore from "@fantastic-images/core";
+import renderTemplate from "@fantastic-images/core/dist/fabric/render/render-template";
 import { Template } from "@fantastic-images/types/src/Template";
 import { EditorPlugin } from "@ui5/shared-lib/lib/editor/EditorPlugin";
+import equal from "deep-equal";
+import { fabric } from "fabric";
 import { getChanges } from "./get-changes";
 
 const hasOwnProperty = (object: any, index: string) =>
@@ -51,7 +51,7 @@ export default class SmartRender extends EditorPlugin {
     if (this.editor && this.canvas) {
       const { canvas } = this;
       const { template } = this.editor.state;
-      await fiCore.fabric.render.renderTemplate({ fabric })({
+      await renderTemplate({ fabric })({
         canvas,
       })(template);
       this.editor.events.emit("ApplySelection");

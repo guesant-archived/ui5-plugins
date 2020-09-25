@@ -18,21 +18,18 @@
  */
 //endregion
 
-import * as React from "react";
-import { EditorPlugin } from "@ui5/shared-lib/lib/editor/EditorPlugin";
-import { LayerList } from "@ui5/react-user-interface/lib/LayerList";
-import { LayerListItem } from "@ui5/react-user-interface/lib/LayerListItem";
-import { LayerListHeader } from "@ui5/react-user-interface/lib/LayerListHeader";
+import {
+  ADD_STATIC_IMAGE,
+  REMOVE_STATIC_IMAGE,
+} from "@fantastic-images/lib/dist/model/mutations";
 import { TemplateStaticImage } from "@fantastic-images/types/src/TemplateStaticImage";
-import * as lib from "@fantastic-images/lib";
+import { LayerList } from "@ui5/react-user-interface/lib/LayerList";
+import { LayerListHeader } from "@ui5/react-user-interface/lib/LayerListHeader";
+import { LayerListItem } from "@ui5/react-user-interface/lib/LayerListItem";
+import { EditorPlugin } from "@ui5/shared-lib/lib/editor/EditorPlugin";
+import * as React from "react";
 import { readAsBase64 } from "./read-as-base-64";
 import { supportsFileReaderAPI } from "./supportsFileReaderAPI";
-
-const {
-  model: {
-    mutations: { ADD_STATIC_IMAGE, REMOVE_STATIC_IMAGE },
-  },
-} = lib;
 
 const tabStatic = Symbol("static");
 

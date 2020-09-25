@@ -18,17 +18,11 @@
  */
 //endregion
 
-import { fabric } from "fabric";
+import UPDATE_OBJECT from "@fantastic-images/lib/dist/model/mutations/update-object";
 import { findIndexByObject } from "@ui5/shared-lib/lib/canvas/find-index-by-object";
 import { EditorPlugin } from "@ui5/shared-lib/lib/editor/EditorPlugin";
+import { fabric } from "fabric";
 import { Canvas, Object } from "fabric/fabric-impl";
-import * as lib from "@fantastic-images/lib";
-
-const {
-  model: {
-    mutations: { UPDATE_OBJECT },
-  },
-} = lib;
 
 const reactive = (canvas: Canvas) => (trigger: string, fn: any) =>
   trigger.split(" ").forEach((i) => canvas.on(i, fn));

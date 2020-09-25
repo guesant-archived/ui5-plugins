@@ -18,16 +18,10 @@
  */
 //endregion
 
+import REMOVE_OBJECT from "@fantastic-images/lib/dist/model/mutations/remove-object";
 import { ActionItem } from "@ui5/react-user-interface/lib/Actions";
-import * as lib from "@fantastic-images/lib";
-import { getKey } from "../../../get-key";
 import ListObjects from "../../..";
-
-const {
-  model: {
-    mutations: { REMOVE_OBJECT },
-  },
-} = lib;
+import { getKey } from "../../../get-key";
 
 export const removeSelected = (plugin: ListObjects): ActionItem => [
   {

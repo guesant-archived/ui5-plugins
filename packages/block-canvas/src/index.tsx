@@ -18,7 +18,7 @@
  */
 //endregion
 
-import canvasByDOM from "@fantastic-images/core/dist/fabric/get-canvas/canvas-by-dom";
+import { canvasByDom } from "@fantastic-images/core/dist/fabric/get-canvas/canvas-by-dom";
 import { EditorPlugin } from "@ui5/shared-lib/lib/editor/EditorPlugin";
 import { fabric } from "fabric";
 import * as React from "react";
@@ -40,7 +40,7 @@ export default class EditorCanvas extends EditorPlugin {
     if (this.editor && this.canvasRef?.current) {
       const { template } = this.editor.state;
       const { current: wrapper } = this.canvasRef;
-      const canvas = canvasByDOM({ fabric })({ document: window.document })({
+      const canvas = canvasByDom({ fabric })({ document: window.document })({
         wrapper,
         id: randomID(),
       })(template);

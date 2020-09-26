@@ -38,47 +38,72 @@ export default class SyncObjects extends EditorPlugin {
       },
     };
   }
-  onSetup() {}
+  onSetup() {
+    this.editor?.events.on("SyncObjects", () => this.syncObjects(false));
+  }
   async onMount() {}
+  async syncObjects(fromEvent: boolean = false, e?: any) {
+    if (this.editor && this.canvas) {
+      const { canvas } = this;
+      const { template } = this.editor.state;
+      const {
+        model: { staticImages },
+      } = template;
+      const findIndexByObject_ = findIndexByObject(canvas);
+      const getStatic = (filterPosition?: "front" | "back") =>
+        filterPosition
+          ? staticImages.filter(({ position }) => position === filterPosition)
+          : staticImages;
+      const getStaticLength = (filterPosition?: "front" | "back") =>
+        getStatic(filterPosition).length;
+      await this.editor.onSetTemplate(
+        (fromEvent && e
+          ? getTargets(e)
+          : canvas
+              .getObjects()
+              .slice(
+                getStaticLength("back"),
+                canvas.getObjects().length - getStaticLength("front"),
+              )
+        )
+          .map(
+            (obj) =>
+              [
+                obj,
+                findIndexByObject_(obj) - getStaticLength("back"),
+                findIndexByObject_(obj),
+              ] as [Object, number, number],
+          )
+          .map(([object, itemIndex, canvasIndex]): [any, number, number] => {
+            return [
+              {
+                ...object.toObject(),
+                ...(object.group
+                  ? (() => {
+                      const { x: left, y: top } = fabric.util.transformPoint(
+                        new fabric.Point(object.left || 0, object.top || 0),
+                        (object.group && object.group.calcOwnMatrix()) || [],
+                      );
+                      return { left, top };
+                    })()
+                  : {}),
+              },
+              itemIndex,
+              canvasIndex,
+            ];
+          })
+          .reduce(
+            (acc, [object, idx]) => UPDATE_OBJECT(idx, object)(acc),
+            template,
+          ),
+      );
+    }
+  }
   async watchToChanges() {
     if (this.canvas && this.editor) {
       const { canvas } = this;
       const _reactive = reactive(canvas);
-      const findIndexByObject_ = findIndexByObject(canvas);
-      _reactive("object:modified", async (e: any) => {
-        if (!this.editor) return;
-        const { template } = this.editor.state;
-        const target = getTargets(e);
-        await this.editor.onSetTemplate(
-          target
-            .map(
-              (obj) =>
-                [
-                  obj,
-                  findIndexByObject_(obj) -
-                    template.model.staticImages.filter(
-                      ({ position }) => position === "back",
-                    ).length,
-                  findIndexByObject_(obj),
-                ] as [Object, number, number],
-            )
-            .map(([object, itemIndex, canvasIndex]): [any, number, number] => {
-              const { x: left, y: top } = fabric.util.transformPoint(
-                new fabric.Point(object.left || 0, object.top || 0),
-                (object.group as any).calcOwnMatrix(),
-              );
-              return [
-                { ...object.toObject(), left, top },
-                itemIndex,
-                canvasIndex,
-              ];
-            })
-            .reduce(
-              (acc, [object, idx]) => UPDATE_OBJECT(idx, object)(acc),
-              template,
-            ),
-        );
-      });
+      _reactive("object:modified", (e: any) => this.syncObjects(true, e));
     }
   }
   async onSetupCanvas() {

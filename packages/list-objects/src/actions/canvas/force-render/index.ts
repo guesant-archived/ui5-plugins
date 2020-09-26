@@ -18,14 +18,18 @@
  */
 //endregion
 
-import { ActionGroup } from "@ui5/react-user-interface/lib/Actions";
-import ListObjects from "..";
-import { canvas } from "./canvas";
-import { newObject } from "./new-object";
-import { selection } from "./selection";
+import { ActionItem } from "@ui5/react-user-interface/lib/Actions";
+import { getKey } from "../../../get-key";
+import ListObjects from "../../../index";
 
-export const actions = (plugin: ListObjects): ActionGroup[] => [
-  canvas(plugin),
-  selection(plugin),
-  newObject(plugin),
+export const forceRender = (plugin: ListObjects): ActionItem => [
+  {
+    value: getKey(Math.random()),
+    children: "Forçar Renderização",
+  },
+  async () => {
+    if (plugin.editor) {
+      await plugin.editor.events.emit("CanvasForceRender");
+    }
+  },
 ];

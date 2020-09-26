@@ -295,6 +295,20 @@ importers:
       '@ui5/shared-lib': 'link:../../../ui5-monorepo/packages/shared-lib'
       tslib: ^2.0.1
       typescript: ^4.0.2
+  packages/sketch:
+    dependencies:
+      '@ui5/shared-lib': 'link:../../../ui5-monorepo/packages/shared-lib'
+    devDependencies:
+      '@types/react': 16.9.49
+      '@types/react-dom': 16.9.8
+      tslib: 2.0.1
+      typescript: 4.0.3
+    specifiers:
+      '@types/react': ^16.9.49
+      '@types/react-dom': ^16.9.8
+      '@ui5/shared-lib': 'link:../../../ui5-monorepo/packages/shared-lib'
+      tslib: ^2.0.1
+      typescript: ^4.0.2
   packages/smart-render:
     dependencies:
       '@fantastic-images/core': 'link:../../../fantastic-images/packages/core'

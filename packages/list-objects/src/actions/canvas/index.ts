@@ -19,13 +19,10 @@
 //endregion
 
 import { ActionGroup } from "@ui5/react-user-interface/lib/Actions";
-import ListObjects from "..";
-import { canvas } from "./canvas";
-import { newObject } from "./new-object";
-import { selection } from "./selection";
+import ListObjects from "../..";
+import { forceRender } from "./force-render";
 
-export const actions = (plugin: ListObjects): ActionGroup[] => [
-  canvas(plugin),
-  selection(plugin),
-  newObject(plugin),
+export const canvas = (plugin: ListObjects): ActionGroup => [
+  { label: "Canvas" },
+  [forceRender(plugin)],
 ];

@@ -51,6 +51,9 @@ export default class SyncSelection extends EditorPlugin {
                 ).length || 0),
             ),
           });
+        !["NO_SYNC"].includes(e.e.type) &&
+          e.selected.length === 1 &&
+          this.editor?.events.syncEmit("ApplySelection", false);
       });
       _reactive("selection:cleared", ({ e: { type } }: IEvent) => {
         !["NO_SYNC"].includes(type) &&

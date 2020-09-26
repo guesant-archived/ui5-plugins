@@ -18,11 +18,15 @@
  */
 //endregion
 
+import { Template } from "@fantastic-images/types/src/Template";
 import { EditorPlugin } from "@ui5/shared-lib/lib/editor/EditorPlugin";
+import equal from "deep-equal";
 import { fabric } from "fabric";
 import { Canvas } from "fabric/fabric-impl";
 
 export default class Zoom extends EditorPlugin {
+  zoomHandler: any;
+
   onRegisterPlugin() {
     return {
       info: {
@@ -32,17 +36,56 @@ export default class Zoom extends EditorPlugin {
   }
   onSetup() {}
   async onMount() {}
-  async onSetupCanvas() {
-    if (this.canvas) {
-      this.canvas.on("mouse:wheel", function (this: Canvas, { e }: any) {
+  setZoomHandler = (newHandler: any) => {
+    this.zoomHandler && this.canvas?.off("mouse:wheel", this.zoomHandler);
+    this.zoomHandler = newHandler;
+    this.canvas?.on("mouse:wheel", newHandler);
+  };
+  attachZoomListener() {
+    if (this.canvas && this.editor) {
+      const {
+        template: {
+          model: {
+            sketch: { width, height },
+          },
+        },
+      } = this.editor.state;
+      const minZoom = 90 / Math.max(width, height);
+      const maxZoom = 20;
+      this.setZoomHandler(function (this: Canvas, { e }: any) {
         e.preventDefault();
         e.stopPropagation();
         this.zoomToPoint(
           new fabric.Point(e.offsetX, e.offsetY),
-          Math.max(0.45, Math.min(20, this.getZoom() * 0.999 ** e.deltaY)),
+          Math.max(
+            minZoom,
+            Math.min(maxZoom, this.getZoom() * 0.999 ** e.deltaY),
+          ),
         );
         this.requestRenderAll();
       });
+    }
+  }
+  async onSetupCanvas() {
+    if (this.editor) {
+      this.editor?.events.on(
+        "EditorOnSetTemplate",
+        ([prevTemplate, currTemplate]: [Template, Template]) => {
+          if (
+            !equal(
+              prevTemplate.model.sketch.width,
+              currTemplate.model.sketch.width,
+            ) ||
+            !equal(
+              prevTemplate.model.sketch.height,
+              currTemplate.model.sketch.height,
+            )
+          ) {
+            this.attachZoomListener();
+          }
+        },
+      );
+      this.attachZoomListener();
     }
   }
 }

@@ -18,7 +18,11 @@
  */
 //endregion
 
+import { InputText } from "@ui5/react-user-interface/lib/Form/InputText";
 import { EditorPlugin } from "@ui5/shared-lib/lib/editor/EditorPlugin";
+import * as React from "react";
+
+const tabSketch = Symbol("sketch");
 
 export default class Sketch extends EditorPlugin {
   onRegisterPlugin() {
@@ -29,5 +33,79 @@ export default class Sketch extends EditorPlugin {
     };
   }
   onSetup() {}
-  async onMount() {}
+  async onMount() {
+    if (this.editor) {
+      await this.editor.events.emit("SetEditorRightTab", [
+        { controlledIndex: tabSketch },
+        [
+          { ui: { displayText: "Sketch" } },
+          () => {
+            if (!this.editor) return <div />;
+            const { template } = this.editor.state;
+            const {
+              template: {
+                model: {
+                  sketch: { width, height },
+                },
+              },
+            } = this.editor.state;
+            return (
+              this.editor && (
+                <div
+                  style={{ padding: 6 }}
+                  children={
+                    <>
+                      <div
+                        style={{
+                          display: "grid",
+                          gap: 4,
+                          gridTemplateColumns: "repeat(2, 80px)",
+                        }}
+                        children={
+                          <>
+                            <InputText
+                              prefix="w"
+                              value={width}
+                              onChange={({ target: { value } }) => {
+                                this.editor?.onSetTemplate({
+                                  ...template,
+                                  model: {
+                                    ...template.model,
+                                    sketch: {
+                                      ...template.model.sketch,
+                                      width: +value,
+                                    },
+                                  },
+                                });
+                              }}
+                            />
+                            <InputText
+                              prefix="h"
+                              value={height}
+                              onChange={({ target: { value } }) => {
+                                this.editor?.onSetTemplate({
+                                  ...template,
+                                  model: {
+                                    ...template.model,
+                                    sketch: {
+                                      ...template.model.sketch,
+                                      height: +value,
+                                    },
+                                  },
+                                });
+                              }}
+                            />
+                          </>
+                        }
+                      />
+                    </>
+                  }
+                />
+              )
+            );
+          },
+        ],
+      ]);
+    }
+  }
 }

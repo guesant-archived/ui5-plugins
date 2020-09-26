@@ -20,7 +20,7 @@
 
 import { findIndexByObject } from "@ui5/shared-lib/lib/canvas/find-index-by-object";
 import { EditorPlugin } from "@ui5/shared-lib/lib/editor/EditorPlugin";
-import { Canvas, Object, IEvent } from "fabric/fabric-impl";
+import { Canvas, IEvent, Object } from "fabric/fabric-impl";
 
 const reactive = (canvas: Canvas) => (trigger: string, fn: any) =>
   trigger.split(" ").forEach((i) => canvas.on(i, fn));

@@ -33,15 +33,11 @@ export const addImage = (plugin: ListObjects): ActionItem => [
   async () => {
     if (plugin.editor) {
       const { template } = plugin.editor.state;
-      await imageFromURL({ fabric })(
-        "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
-        {
-          left: 25,
-          top: 25,
-          width: 250,
-          height: 250,
-          backgroundColor: "rgba(255, 0, 0, 0.25)",
-        },
+      await imageFromURL({
+        fabric,
+      })(
+        "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjUwIiBoZWlnaHQ9IjI1MCIgdmlld0JveD0iMCAwIDI1MCAyNTAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTAgMEgyNTBWMjUwSDBWMFoiIGZpbGw9IiNGRjAwMDAiIGZpbGwtb3BhY2l0eT0iMC4xIi8+PC9zdmc+",
+        { left: 25, top: 25, width: 250, height: 250 },
       )
         .then((img) => img.toObject())
         .then((img) =>

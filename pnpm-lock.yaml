@@ -170,6 +170,7 @@ importers:
     specifiers:
       '@types/react': ^16.9.49
       '@types/react-dom': ^16.9.8
+      '@ui5/react-user-interface': 'link:../../../ui5-monorepo/packages/react-user-interface'
       '@ui5/shared-lib': 'link:../../../ui5-monorepo/packages/shared-lib'
       tslib: ^2.0.1
       typescript: ^4.0.2
@@ -335,9 +336,11 @@ importers:
       '@fantastic-images/types': 'link:../../../fantastic-images/packages/types'
       '@ui5/shared-lib': 'link:../../../ui5-monorepo/packages/shared-lib'
       deep-equal: 2.0.3
+      lodash.zip: 4.2.0
     devDependencies:
       '@types/deep-equal': 1.0.1
       '@types/fabric': 3.6.8
+      '@types/lodash.zip': 4.2.6
       '@types/react': 16.9.49
       '@types/react-dom': 16.9.8
       tslib: 2.0.1
@@ -347,10 +350,12 @@ importers:
       '@fantastic-images/types': 'link:../../../fantastic-images/packages/types'
       '@types/deep-equal': ^1.0.1
       '@types/fabric': ^3.6.8
+      '@types/lodash.zip': ^4.2.6
       '@types/react': ^16.9.49
       '@types/react-dom': ^16.9.8
       '@ui5/shared-lib': 'link:../../../ui5-monorepo/packages/shared-lib'
       deep-equal: ^2.0.3
+      lodash.zip: ^4.2.0
       tslib: ^2.0.1
       typescript: ^4.0.2
 lockfileVersion: 5.1
@@ -369,6 +374,16 @@ packages:
     dev: true
     resolution:
       integrity: sha512-iMIqiko6ooLrTh1joXodJK5X9xeEALT1kM5G3ZLhD3hszxBdIEd5C75U834D9mLcINgD4OyZf5uQXjkuYydWvA==
+  /@types/lodash.zip/4.2.6:
+    dependencies:
+      '@types/lodash': 4.14.161
+    dev: true
+    resolution:
+      integrity: sha512-mKAcnkyFaihVR1oK83ZBQqSSQ1hpAY+uD5QaDkf//xtvr4NlNwqJEDg/oQoqLJg5YdSEwVWlQq0Aq4oLvD3zuw==
+  /@types/lodash/4.14.161:
+    dev: true
+    resolution:
+      integrity: sha512-EP6O3Jkr7bXvZZSZYlsgt5DIjiGr0dXP1/jVEwVLTFgg0d+3lWVQkRavYVQszV7dYUwvg0B8R0MBDpcmXg7XIA==
   /@types/prop-types/15.7.3:
     dev: true
     resolution:
@@ -624,6 +639,10 @@ packages:
     dev: false
     resolution:
       integrity: sha512-xHjhDr3cNBK0BzdUJSPXZntQUx/mwMS5Rw4A7lPJ90XGAO6ISP/ePDNuo0vhqOZU+UD5JoodwCAAoZQd3FeAKw==
+  /lodash.zip/4.2.0:
+    dev: false
+    resolution:
+      integrity: sha1-7GZi5IlkCO1KtsVCo5kLcswIACA=
   /object-inspect/1.8.0:
     dev: false
     resolution:

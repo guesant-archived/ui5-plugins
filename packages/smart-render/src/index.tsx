@@ -23,6 +23,7 @@ import { Template } from "@fantastic-images/types/src/Template";
 import { EditorPlugin } from "@ui5/shared-lib/lib/editor/EditorPlugin";
 import equal from "deep-equal";
 import { fabric } from "fabric";
+import zip from "lodash.zip";
 import { getChanges } from "./get-changes";
 
 const hasOwnProperty = (object: any, index: string) =>
@@ -44,7 +45,16 @@ const needsFullRender = ([currentTemplate, newTemplate]: [
   }) ||
   !equal(currentTemplate.model.staticImages, newTemplate.model.staticImages, {
     strict: true,
-  });
+  }) ||
+  (zip(
+    currentTemplate.model.fabricExported.objects,
+    newTemplate.model.fabricExported.objects,
+  ) as [any, any]).filter(
+    ([{ src: src1 }, { src: src2 }]) =>
+      !equal(src1, src2, {
+        strict: true,
+      }),
+  ).length;
 
 export default class SmartRender extends EditorPlugin {
   async forceRender() {

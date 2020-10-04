@@ -44,9 +44,7 @@ export const downloadTemplate = (plugin: EditorHeader): ActionItem => [
   async () => {
     if (plugin.editor) {
       const { template } = plugin.editor.state;
-      const [formatTemplate] = [
-        confirm("Deseja formatar o template a ser exportado?"),
-      ];
+      const [formatTemplate] = [confirm("Formatar o JSON a ser exportado?")];
       const optimizedTemplate: Template = {
         ...template,
         model: {

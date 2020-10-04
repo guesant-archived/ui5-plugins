@@ -55,9 +55,7 @@ export const openTemplate = (plugin: EditorHeader): ActionItem => [
       if (file) {
         await parseJSON(await readAsText(file))
           .then(async (template: Template) =>
-            confirm(
-              "Deseja otimizar sua experiência no Editor adicionando as imagens estáticas ao cache?",
-            )
+            confirm("Adicionar imagens estáticas ao cache?")
               ? ({
                   ...template,
                   model: {

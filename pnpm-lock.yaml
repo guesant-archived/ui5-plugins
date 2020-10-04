@@ -161,6 +161,7 @@ importers:
       typescript: ^4.0.2
   packages/inspect-object-image-src:
     dependencies:
+      '@ui5/react-user-interface': 'link:../../../ui5-monorepo/packages/react-user-interface'
       '@ui5/shared-lib': 'link:../../../ui5-monorepo/packages/shared-lib'
     devDependencies:
       '@types/react': 16.9.49

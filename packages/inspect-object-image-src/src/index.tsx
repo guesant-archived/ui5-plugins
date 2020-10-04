@@ -18,7 +18,14 @@
  */
 //endregion
 
+import * as React from "react";
+import { InputText } from "@ui5/react-user-interface/lib/Form/InputText";
 import { EditorPlugin } from "@ui5/shared-lib/lib/editor/EditorPlugin";
+import {
+  updateSelectedItems,
+  fnFunction,
+} from "@ui5/shared-lib/lib/template/update-selected-items";
+import { sharedProperty } from "@ui5/shared-lib/lib/shared-property";
 
 export default class InspectObjectImageSRC extends EditorPlugin {
   onRegisterPlugin() {
@@ -29,5 +36,79 @@ export default class InspectObjectImageSRC extends EditorPlugin {
     };
   }
   onSetup() {}
-  async onMount() {}
+  async onMount() {
+    await this.editor?.events.emit("SetInspector", {
+      verifyCompatibility: ({ object: { type } }: any) =>
+        ["image"].includes(type),
+      component: () => {
+        if (!this.editor) return <div />;
+        const { template, editor } = this.editor.state;
+        const selectedObjects = template.model.fabricExported.objects.filter(
+          (_, idx) => editor.selectedObjects.includes(idx),
+        );
+        const updateAll = (fn: fnFunction) => {
+          this.editor?.onSetTemplate(
+            updateSelectedItems({ selectedItems: editor.selectedObjects })({
+              template,
+            })(fn),
+          );
+        };
+        const [canEditInputText, setCanEditInputText] = React.useState(false);
+        const src = sharedProperty(({ src }) => src, "")(selectedObjects);
+        return (
+          <div
+            style={{
+              padding: "6px",
+              display: "flex",
+              flexDirection: "column",
+              gap: 4,
+            }}
+          >
+            <div style={{ display: "flex", gap: 4, alignItems: "center" }}>
+              <img
+                style={{ objectFit: "cover", width: 18, height: 18 }}
+                src={src}
+              />
+              <InputText
+                type="text"
+                readOnly={!canEditInputText}
+                style={{ flex: "1 0" }}
+                value={src}
+                onChange={({ target: { value } }) => {
+                  updateAll(() => ({ src: value }));
+                }}
+                onClick={(e) => {
+                  if (e.altKey) {
+                    setCanEditInputText(!canEditInputText);
+                  }
+                }}
+                onBlurCapture={() => {
+                  setCanEditInputText(false);
+                }}
+                onDoubleClick={({ target }) => {
+                  (target as HTMLInputElement).select();
+                }}
+                onFocus={({ target }) => {
+                  target.select();
+                }}
+              />
+            </div>
+            <InputText
+              type="file"
+              onChange={({ target }) => {
+                const [file] = Array.from(target.files || []);
+                if (file) {
+                  const reader = new FileReader();
+                  reader.onload = () => {
+                    updateAll(() => ({ src: reader.result as string }));
+                  };
+                  reader.readAsDataURL(file);
+                }
+              }}
+            />
+          </div>
+        );
+      },
+    });
+  }
 }

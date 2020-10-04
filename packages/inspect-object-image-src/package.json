@@ -24,6 +24,7 @@
     "lib"
   ],
   "dependencies": {
+    "@ui5/react-user-interface": "link:../../../ui5-monorepo/packages/react-user-interface",
     "@ui5/shared-lib": "link:../../../ui5-monorepo/packages/shared-lib"
   }
 }

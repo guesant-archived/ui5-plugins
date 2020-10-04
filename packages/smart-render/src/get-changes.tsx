@@ -18,10 +18,10 @@
  */
 //endregion
 
+import { Template } from "@fantastic-images/types/src/Template";
 import equal from "deep-equal";
 import { fabric } from "fabric";
 import { Object as FabricObject } from "fabric/fabric-impl";
-import { Template } from "@fantastic-images/types/src/Template";
 
 export const getChanges = (
   canvas: fabric.Canvas,
@@ -33,20 +33,30 @@ export const getChanges = (
   }: Template,
 ) =>
   objects
-    .map((obj, idx) => {
-      const canvasIndex =
-        staticImages.filter(({ position }) => position === "back").length + idx;
-      const canvasItem = (canvas as any).item(canvasIndex) as FabricObject;
-      const canvasObj = canvasItem.toObject();
-      return {
-        obj,
-        canvasItem,
-        canvasIndex,
-        changedProperties: [...Object.keys(canvasObj), ...Object.keys(obj)]
-          .filter((i, idx, arr) => arr.indexOf(i) === idx)
-          .map((key) => [key, obj[key], canvasObj[key]])
-          .filter(([, val1, val2]) => !equal(val1, val2, { strict: true }))
-          .reduce((acc, [key, newValue]) => ({ ...acc, [key]: newValue }), {}),
-      };
-    })
+    .map((obj, idx) => ({
+      obj,
+      idx,
+      canvasIndex:
+        staticImages.filter(({ position }) => position === "back").length + idx,
+    }))
+    .map(({ canvasIndex, ...rest }) => ({
+      canvasItem: (canvas as any).item(canvasIndex) as FabricObject,
+      canvasIndex,
+      ...rest,
+    }))
+    .filter(({ canvasItem }) => Boolean(canvasItem))
+    .map(({ canvasItem, ...rest }) => ({
+      canvasObj: canvasItem.toObject(),
+      canvasItem,
+      ...rest,
+    }))
+    .map(({ obj, canvasObj, ...rest }) => ({
+      obj,
+      changedProperties: [...Object.keys(canvasObj), ...Object.keys(obj)]
+        .filter((i, idx, arr) => arr.indexOf(i) === idx)
+        .map((key) => [key, obj[key], canvasObj[key]])
+        .filter(([, val1, val2]) => !equal(val1, val2, { strict: true }))
+        .reduce((acc, [key, newValue]) => ({ ...acc, [key]: newValue }), {}),
+      ...rest,
+    }))
     .filter(({ changedProperties }) => Object.keys(changedProperties).length);
